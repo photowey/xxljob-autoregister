@@ -1,0 +1,52 @@
+#!/bin/bash
+
+#
+# @author photowey
+# @version 3.1.1.1.0.0
+# @since 2025/07/10
+#
+
+export LANG="zh_CN.UTF-8"
+export LC_ALL="zh_CN.UTF-8"
+
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[0;33m'
+BLUE='\033[0;34m'
+NC='\033[0m'
+
+JAVA_FILES=$(git diff --cached --name-only | grep '\.java$')
+
+if [ -z "$JAVA_FILES" ]; then
+    echo -e "${YELLOW}No .java files changed. Skipping checks.${NC}"
+    exit 0
+fi
+
+run_maven_command() {
+    local command="$1"
+    local success_message="$2"
+    local failure_message="$3"
+
+    echo -e "${BLUE}Running $command ...${NC}"
+    if mvn "$command"; then
+        echo -e "${GREEN}$success_message${NC}"
+    else
+        echo -e "${RED}$failure_message${NC}"
+        exit 1
+    fi
+}
+
+run_maven_command "checkstyle:check" \
+    "Checkstyle passed." \
+    "Checkstyle failed. Commit aborted."
+
+run_maven_command "clean" \
+    "Clean passed." \
+    "Clean failed. Commit aborted."
+
+run_maven_command "compile" \
+    "Compile passed." \
+    "Compile failed. Commit aborted."
+
+echo -e "${GREEN}All checks passed. Proceeding with commit...${NC}"
+exit 0

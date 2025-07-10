@@ -1,0 +1,18 @@
+server:
+  port: 9527
+
+# ----------------------------------------------------------------
+
+spring:
+  application:
+    name: xxljob-autoregister-test
+  profiles:
+    active: dev
+
+# ----------------------------------------------------------------
+
+logging:
+  level:
+    root: info
+  pattern:
+    console: '%red(%d{yyyy-MM-dd HH:mm:ss.SSS}) %red([${spring.application.name}]) %green([%thread]) %highlight(%-5level) %boldMagenta(%logger) - %cyan(%msg%n)'

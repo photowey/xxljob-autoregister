@@ -75,7 +75,7 @@ public void mixes() {
 @AutoJob(
     job = @AutoJob.Job(
         value = "io.github.photowey.xxljob.autoregister.web.handler.HelloHandler#proxy
-        enabled = true
+        enabled = true // Unused now.
     ),
     // ...
 )
@@ -89,7 +89,7 @@ public void proxy() {
 ```java
 @AutoJob(
     job = @AutoJob.Job(
-        value = "io.github.photowey.xxljob.autoregister.web.handler.HelloHandler#autoScheduleTask",
+        value = "io.github.photowey.xxljob.autoregister.web.handler.HelloHandler#autoStart",
         enabled = true
     ),
     // ...
@@ -97,8 +97,8 @@ public void proxy() {
     // Auto start
     triggerStatus = 1
 )
-public void autoScheduleTask() {
-    log.info("Hello autoScheduleTask");
+public void autoStart() {
+    log.info("Hello autoStart");
 }
 ```
 
@@ -138,13 +138,14 @@ xxljob:
   automatic:
     register:
       admin:
-        address: "http://127.0.0.1:18080/admin"
+        address: "http://127.0.0.1:8080/xxl-job-admin"
         access-token: "${ACCESS_TOKEN:default_token}"
 
       authentication:
         username: "${ADMIN_USERNAME:admin}"
         password: "${ADMIN_PASSWORD:123456}"
 
+	  # @see com.xxl.job.core.executor.impl.XxlJobSpringExecutor
       executor:
         timeout: 30
         appname: "${spring.application.name}"
@@ -171,7 +172,7 @@ xxljob:
 local:
   config:
     job:
-      handler: "io.github.photowey.xxljob.autoregister.web.handler.HelloHandler#spelScheduleTask"
+      handler: "io.github.photowey.xxljob.autoregister.web.handler.HelloHandler#spel"
       base:
         author: "photowey"
         email: "photowey@gmail.com"
@@ -180,9 +181,7 @@ local:
 
 ```
 
-
-
-## 3.`API`
+## 3.`Dynamic modules`
 
 #### 3.1.`Http`
 
@@ -226,6 +225,7 @@ local:
 
 ```xml
 <!-- In JVM -->
+<!-- Default -->
 <dependency>
     <groupId>io.github.photowey</groupId>
     <artifactId>xxljob-autoregister-lock-reentrantLock</artifactId>
@@ -259,11 +259,11 @@ local:
 #### 3.3.2.`Local`
 
 ```xml
+
 <!-- Default -->
 <dependency>
     <groupId>io.github.photowey</groupId>
     <artifactId>xxljob-autoregister-storage-caffeine</artifactId>
-    <version>${project.version}</version>
 </dependency>
 ```
 

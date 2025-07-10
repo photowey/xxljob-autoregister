@@ -167,7 +167,6 @@ public class JobServiceImpl extends AbstractEnvironmentHolder implements JobServ
                 ctx.add(XxljobConstants.Field.AUTHOR, this.resolvePlaceholders(autoJob.base().author()));
             });
 
-            JobAddPayload payload = this.toJobAddPayload(group, autoJob);
 
             boolean registerd = false;
             if (!CollectionUtils.isEmpty(jobs)) {
@@ -178,6 +177,7 @@ public class JobServiceImpl extends AbstractEnvironmentHolder implements JobServ
                 }
             }
 
+            JobAddPayload payload = this.toJobAddPayload(group, autoJob);
             if (!registerd) {
                 this.add(payload);
             }

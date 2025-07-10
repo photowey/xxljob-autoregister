@@ -18,15 +18,11 @@ package io.github.photowey.xxljob.autoregister.core.domain.payload;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 /**
  * {@code Group}.
@@ -36,7 +32,7 @@ import lombok.NoArgsConstructor;
  * @since 2025/07/09
  */
 @Data
-@Builder
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
 public class GroupAddPayload implements Serializable {
@@ -44,20 +40,12 @@ public class GroupAddPayload implements Serializable {
     @Serial
     private static final long serialVersionUID = -6018925021838390781L;
 
-    private int id;
-    private String appname;
-    private String title;
-    private int addressType;
-    private String addressList;
-    private Date updateTime;
-    private List<String> registryList;
+    protected String appname;
+    protected String title;
+    protected int addressType;
+    protected String addressList;
 
     // ----------------------------------------------------------------
-
-
-    public int id() {
-        return id;
-    }
 
     public String appname() {
         return appname;
@@ -75,15 +63,7 @@ public class GroupAddPayload implements Serializable {
         return addressList;
     }
 
-    public Date updateTime() {
-        return updateTime;
-    }
-
-    public List<String> registryList() {
-        if (this.addressList != null && !this.addressList.trim().isEmpty()) {
-            this.registryList = new ArrayList<>(Arrays.asList(this.addressList.split(",")));
-        }
-
-        return this.registryList;
+    public boolean determineIsManual() {
+        return 1 == this.addressType;
     }
 }

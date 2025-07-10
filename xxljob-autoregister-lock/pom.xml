@@ -18,6 +18,7 @@
 
     <modules>
         <module>xxljob-autoregister-lock-api</module>
+        <module>xxljob-autoregister-lock-redisson</module>
         <module>xxljob-autoregister-lock-reentrantLock</module>
     </modules>
 

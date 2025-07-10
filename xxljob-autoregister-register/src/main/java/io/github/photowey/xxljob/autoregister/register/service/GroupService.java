@@ -16,6 +16,14 @@
  */
 package io.github.photowey.xxljob.autoregister.register.service;
 
+import java.util.List;
+
+import io.github.photowey.xxljob.autoregister.core.domain.dto.GroupDTO;
+import io.github.photowey.xxljob.autoregister.core.domain.payload.GroupAddPayload;
+import io.github.photowey.xxljob.autoregister.core.getter.XxljobPropertiesGetter;
+import io.github.photowey.xxljob.autoregister.register.context.RegisterContext;
+import io.github.photowey.xxljob.autoregister.register.engine.RegisterEngineGetter;
+
 /**
  * {@code XxljobGroupService}.
  *
@@ -23,6 +31,32 @@ package io.github.photowey.xxljob.autoregister.register.service;
  * @version 3.1.1.1.0.0
  * @since 2025/07/09
  */
-public interface GroupService {
-    // TODO
+public interface GroupService extends RegisterEngineGetter, XxljobPropertiesGetter {
+
+    default boolean add() {
+        GroupAddPayload payload = GroupAddPayload.builder()
+            .appname(this.xxljobProperties().group().appname())
+            .title(this.xxljobProperties().group().title())
+            .addressType(this.xxljobProperties().group().addressType())
+            .addressList(this.xxljobProperties().group().addressList())
+            .build();
+
+        return this.add(payload);
+    }
+
+    boolean add(GroupAddPayload payload);
+
+    // ----------------------------------------------------------------
+
+    List<GroupDTO> groups();
+
+    GroupDTO myself();
+
+    // ----------------------------------------------------------------
+
+    boolean determineIsRegistered();
+
+    // ----------------------------------------------------------------
+
+    void triggerAutoRegister(RegisterContext ctx);
 }

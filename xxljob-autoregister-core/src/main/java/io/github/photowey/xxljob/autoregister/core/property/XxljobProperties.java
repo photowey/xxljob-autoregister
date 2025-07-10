@@ -61,6 +61,8 @@ public class XxljobProperties implements Serializable {
     private Cache cache = new Cache();
     @Valid
     private Lock lock = new Lock();
+    @Valid
+    private Group group = new Group();
 
     @Data
     @Builder
@@ -76,7 +78,8 @@ public class XxljobProperties implements Serializable {
          * |- <a href="http://127.0.0.1:8080/xxl-job-admin">domain</a>
          */
         @NotBlank(message = "Xxljob: admin address can't be blank")
-        private String address;
+        private String address = "http://127.0.0.1:8080/xxl-job-admin";
+
         @NotBlank(message = "Xxljob: admin accessToken can't be blank")
         private String accessToken;
 
@@ -221,6 +224,39 @@ public class XxljobProperties implements Serializable {
         }
     }
 
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Group implements Serializable {
+
+        @Serial
+        private static final long serialVersionUID = -4682737001564698890L;
+
+        private String appname;
+        private String title;
+        private Integer addressType;
+        private String addressList;
+
+        // ----------------------------------------------------------------
+
+        public String appname() {
+            return appname;
+        }
+
+        public String title() {
+            return title;
+        }
+
+        public Integer addressType() {
+            return addressType;
+        }
+
+        public String addressList() {
+            return addressList;
+        }
+    }
+
     // ----------------------------------------------------------------
 
     public Admin admin() {
@@ -241,6 +277,10 @@ public class XxljobProperties implements Serializable {
 
     public Lock lock() {
         return lock;
+    }
+
+    public Group group() {
+        return group;
     }
 
     // ----------------------------------------------------------------

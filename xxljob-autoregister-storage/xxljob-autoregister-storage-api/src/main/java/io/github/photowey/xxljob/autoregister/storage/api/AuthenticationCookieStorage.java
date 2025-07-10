@@ -31,5 +31,7 @@ public interface AuthenticationCookieStorage extends Ordered, BeanFactoryGetter,
 
     String store(String cacheKey, String cookie);
 
+    String tryFastAcquire(String cacheKey);
+
     String tryAcquire(String cacheKey);
 }

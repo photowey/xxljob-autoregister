@@ -18,11 +18,8 @@ package io.github.photowey.xxljob.autoregister.register.config;
 
 import com.xxl.job.core.executor.impl.XxlJobSpringExecutor;
 import io.github.photowey.xxljob.autoregister.core.property.XxljobProperties;
-import io.github.photowey.xxljob.autoregister.register.engine.DefaultRegisterEngine;
-import io.github.photowey.xxljob.autoregister.register.engine.RegisterEngine;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 /**
@@ -33,15 +30,7 @@ import org.springframework.context.annotation.Configuration;
  * @since 2025/07/09
  */
 @Configuration
-@ComponentScan(value = {
-    "io.github.photowey.xxljob.autoregister.register.service",
-})
 public class XxlJobSpringExecutorConfiguration {
-
-    @Bean
-    public RegisterEngine registerEngine() {
-        return new DefaultRegisterEngine();
-    }
 
     @Bean
     @ConditionalOnMissingBean(XxlJobSpringExecutor.class)

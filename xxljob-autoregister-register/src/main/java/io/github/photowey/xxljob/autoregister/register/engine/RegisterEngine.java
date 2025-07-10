@@ -21,6 +21,7 @@ import io.github.photowey.xxljob.autoregister.core.property.XxljobProperties;
 import io.github.photowey.xxljob.autoregister.http.executor.RequestExecutor;
 import io.github.photowey.xxljob.autoregister.http.parser.HttpCookieParser;
 import io.github.photowey.xxljob.autoregister.lock.distributed.DistributedLock;
+import io.github.photowey.xxljob.autoregister.register.converter.json.JsonConverter;
 import io.github.photowey.xxljob.autoregister.register.service.GroupService;
 import io.github.photowey.xxljob.autoregister.register.service.JobService;
 import io.github.photowey.xxljob.autoregister.register.service.LoginService;
@@ -113,5 +114,16 @@ public interface RegisterEngine extends Engine {
      */
     default HttpCookieParser httpCookieParser() {
         return this.beanFactory().getBean(HttpCookieParser.class);
+    }
+
+    // ----------------------------------------------------------------
+
+    /**
+     * Acquire {@link JsonConverter} instance.
+     *
+     * @return {@link JsonConverter}
+     */
+    default JsonConverter json() {
+        return this.beanFactory().getBean(JsonConverter.class);
     }
 }

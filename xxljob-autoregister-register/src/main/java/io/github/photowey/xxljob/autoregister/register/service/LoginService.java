@@ -42,4 +42,6 @@ public interface LoginService extends RegisterEngineGetter, XxljobPropertiesGett
      * @return {@code Cookie}
      */
     String tryAcquireAuthenticationCookie();
+
+    String tryFastAcquireAuthenticationCookie();
 }

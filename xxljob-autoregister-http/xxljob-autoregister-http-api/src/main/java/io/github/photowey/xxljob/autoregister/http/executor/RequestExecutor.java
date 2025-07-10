@@ -19,6 +19,7 @@ package io.github.photowey.xxljob.autoregister.http.executor;
 import io.github.photowey.xxljob.autoregister.core.domain.http.HttpResponse;
 import io.github.photowey.xxljob.autoregister.core.getter.BeanFactoryGetter;
 import io.github.photowey.xxljob.autoregister.core.getter.XxljobPropertiesGetter;
+import java.util.function.Function;
 import org.springframework.core.Ordered;
 import org.springframework.http.HttpHeaders;
 import org.springframework.util.MultiValueMap;
@@ -43,6 +44,10 @@ public interface RequestExecutor extends Ordered, BeanFactoryGetter, XxljobPrope
     <R, B> HttpResponse<R> post(String url, B body, HttpHeaders headers, Class<R> responseType);
 
     <R> HttpResponse<R> post(
-        String url, MultiValueMap<String, String> body, HttpHeaders headers, Class<R> responseType
+        String url, MultiValueMap<String, Object> body, HttpHeaders headers, Class<R> responseType
+    );
+
+    <R> HttpResponse<R> post(
+        String url, MultiValueMap<String, Object> body, HttpHeaders headers, Function<String, R> converter
     );
 }

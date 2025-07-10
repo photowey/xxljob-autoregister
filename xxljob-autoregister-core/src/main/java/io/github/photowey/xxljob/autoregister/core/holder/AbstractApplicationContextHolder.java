@@ -17,8 +17,6 @@
 package io.github.photowey.xxljob.autoregister.core.holder;
 
 import io.github.photowey.xxljob.autoregister.core.getter.ApplicationContextGetter;
-import lombok.Getter;
-import lombok.experimental.Accessors;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -31,8 +29,6 @@ import org.springframework.context.ConfigurableApplicationContext;
  * @version 3.1.1.1.0.0
  * @since 2025/07/09
  */
-@Getter
-@Accessors(fluent = true)
 public abstract class AbstractApplicationContextHolder
     extends AbstractBeanFactoryHolder
     implements ApplicationContextGetter, ApplicationContextAware {
@@ -42,5 +38,10 @@ public abstract class AbstractApplicationContextHolder
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.applicationContext = (ConfigurableApplicationContext) applicationContext;
+    }
+
+    @Override
+    public ApplicationContext applicationContext() {
+        return applicationContext;
     }
 }

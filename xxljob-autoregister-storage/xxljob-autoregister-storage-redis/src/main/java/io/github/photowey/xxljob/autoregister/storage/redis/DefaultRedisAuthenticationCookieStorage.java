@@ -16,12 +16,13 @@
  */
 package io.github.photowey.xxljob.autoregister.storage.redis;
 
-import java.time.Duration;
-
-import io.github.photowey.xxljob.autoregister.core.holder.AbstractBeanFactoryHolder;
+import io.github.photowey.xxljob.autoregister.core.event.LoadAuthenticationCookieEvent;
+import io.github.photowey.xxljob.autoregister.core.holder.AbstractApplicationContextHolder;
 import io.github.photowey.xxljob.autoregister.storage.api.RedisAuthenticationCookieStorage;
+import java.time.Duration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.util.StringUtils;
 
 /**
  * {@code DefaultRedisAuthenticationCookieStorage}.
@@ -31,7 +32,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
  * @since 2025/07/09
  */
 public class DefaultRedisAuthenticationCookieStorage
-    extends AbstractBeanFactoryHolder
+    extends AbstractApplicationContextHolder
     implements RedisAuthenticationCookieStorage {
 
     @Autowired
@@ -46,7 +47,23 @@ public class DefaultRedisAuthenticationCookieStorage
     }
 
     @Override
+    public String tryFastAcquire(String cacheKey) {
+        return this.redisTemplate.opsForValue().get(cacheKey);
+    }
+
+    @Override
     public String tryAcquire(String cacheKey) {
+        String cookie = this.tryFastAcquire(cacheKey);
+        if (StringUtils.hasText(cookie)) {
+            return cookie;
+        }
+
+        LoadAuthenticationCookieEvent event = new LoadAuthenticationCookieEvent();
+        this.applicationContext().publishEvent(event);
+        if (StringUtils.hasText(event.cookie())) {
+            return event.cookie();
+        }
+
         return this.redisTemplate.opsForValue().get(cacheKey);
     }
 }

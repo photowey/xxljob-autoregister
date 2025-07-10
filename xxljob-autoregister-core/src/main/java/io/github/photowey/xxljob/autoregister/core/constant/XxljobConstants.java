@@ -40,10 +40,19 @@ public interface XxljobConstants {
          * Referrer Policy    strict-origin-when-cross-origin
          * </pre>
          */
-        String LOGIN = "/admin/login";
+        String LOGIN = "/login";
+        String JOB_INFO_ADD = "/jobinfo/add";
+        String GROUP_JOB_PAGE_LIST = "/jobinfo/pageList";
+
+        String GROUP_ADD = "/jobgroup/save";
+        String GROUP_PAGE_LIST = "/jobgroup/pageList";
     }
 
     interface Cookie {
         String XXLJOB_AUTHENTICATION_COOKIE_NAME = "XXL_JOB_LOGIN_IDENTITY";
+    }
+
+    interface Header {
+        String SKIP = "SKIP";
     }
 }

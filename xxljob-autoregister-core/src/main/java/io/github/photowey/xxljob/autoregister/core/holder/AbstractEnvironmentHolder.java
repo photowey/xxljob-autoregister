@@ -17,8 +17,6 @@
 package io.github.photowey.xxljob.autoregister.core.holder;
 
 import io.github.photowey.xxljob.autoregister.core.getter.EnvironmentGetter;
-import lombok.Getter;
-import lombok.experimental.Accessors;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.Environment;
@@ -30,8 +28,6 @@ import org.springframework.core.env.Environment;
  * @version 3.1.1.1.0.0
  * @since 2025/07/09
  */
-@Getter
-@Accessors(fluent = true)
 public abstract class AbstractEnvironmentHolder
     extends AbstractApplicationContextHolder
     implements EnvironmentGetter, EnvironmentAware {
@@ -41,5 +37,10 @@ public abstract class AbstractEnvironmentHolder
     @Override
     public void setEnvironment(Environment environment) {
         this.environment = (ConfigurableEnvironment) environment;
+    }
+
+    @Override
+    public Environment environment() {
+        return environment;
     }
 }

@@ -16,13 +16,12 @@
  */
 package io.github.photowey.xxljob.autoregister.register.annotation;
 
+import io.github.photowey.xxljob.autoregister.core.enums.RegisterDictionary;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-
-import io.github.photowey.xxljob.autoregister.core.enums.RegisterDictionary;
 
 /**
  * {@code AutoJob}.
@@ -32,18 +31,23 @@ import io.github.photowey.xxljob.autoregister.core.enums.RegisterDictionary;
  * @since 2025/07/09
  */
 @Inherited
-@Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.TYPE/*@Inherited*/, ElementType.METHOD})
 // @XxlJob Unsupported now.
 public @interface AutoJob {
 
-    Job job();
+    // Unsupported now.
+    // @XxlJob
+    Job job() default @Job(
+        value = "",
+        enabled = false
+    );
 
     Base base();
 
     Schedule schedule();
 
-    Task task();
+    Task task() default @Task;
 
     Advanced advanced();
 
@@ -55,16 +59,16 @@ public @interface AutoJob {
     // ----------------------------------------------------------------
 
     @interface Job {
-        String value();
+        String value() default "";
 
         String init() default "";
 
         String destroy() default "";
+
+        boolean enabled() default true;
     }
 
     @interface Base {
-        int group();
-
         String description();
 
         String author();
@@ -88,7 +92,8 @@ public @interface AutoJob {
     @interface Task {
         RegisterDictionary.GlueType glueType() default RegisterDictionary.GlueType.BEAN;
 
-        String handler();
+        // @Job#value
+        String handler() default "";
 
         String arguments() default "";
     }

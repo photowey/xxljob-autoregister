@@ -18,12 +18,11 @@ package io.github.photowey.xxljob.autoregister.core.domain.payload;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.Date;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 /**
  * {@code JobAddPayload}.
@@ -33,47 +32,53 @@ import lombok.NoArgsConstructor;
  * @since 2025/07/09
  */
 @Data
-@Builder
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
 public class JobAddPayload implements Serializable {
 
     @Serial
-    private static final long serialVersionUID = 7966217081559884138L;
+    protected static final long serialVersionUID = 7966217081559884138L;
 
     // @see com.xxl.job.admin.core.model.XxlJobInfo
     // @see com.xxl.job.admin.controller.JobInfoController#add
 
-    private int id;
+    // ---------------------------------------------------------------- Base
 
-    private int jobGroup;
-    private String jobDesc;
+    protected int jobGroup;
+    protected String jobDesc;
+    protected String author;
+    protected String alarmEmail;
 
-    private Date addTime;
-    private Date updateTime;
+    // ---------------------------------------------------------------- Schedule
 
-    private String author;
-    private String alarmEmail;
+    protected String scheduleType;
+    protected String scheduleConf;
+    protected int fixRate;
 
-    private String scheduleType;
-    private String scheduleConf;
-    private String misfireStrategy;
+    // ---------------------------------------------------------------- Task
 
-    private String executorRouteStrategy;
-    private String executorHandler;
-    private String executorParam;
-    private String executorBlockStrategy;
-    private int executorTimeout;
-    private int executorFailRetryCount;
+    protected String glueType;
+    protected String executorHandler;
+    protected String executorParam;
 
-    private String glueType;
-    private String glueSource;
-    private String glueRemark;
-    private Date glueUpdatetime;
+    // ---------------------------------------------------------------- Advanced
 
-    private String childJobId;
+    protected String executorRouteStrategy;
+    protected String childJobId;
+    protected String misfireStrategy;
+    protected String executorBlockStrategy;
 
-    private int triggerStatus;
-    private long triggerLastTime;
-    private long triggerNextTime;
+    protected int executorTimeout;
+    protected int executorFailRetryCount;
+
+    // ----------------------------------------------------------------
+
+    protected int triggerStatus;
+
+    // ----------------------------------------------------------------
+
+    public String executorHandler() {
+        return executorHandler;
+    }
 }

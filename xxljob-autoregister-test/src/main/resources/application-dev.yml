@@ -1,0 +1,32 @@
+xxljob:
+  automatic:
+    register:
+      admin:
+        address: "http://127.0.0.1:18080/admin"
+        access-token: "${ACCESS_TOKEN:default_token}"
+
+      authentication:
+        username: "${ADMIN_USERNAME:admin}"
+        password: "${ADMIN_PASSWORD:123456}"
+
+      executor:
+        timeout: 30
+        appname: "${spring.application.name}"
+        address: ""
+        ip: "127.0.0.1"
+        port: 9999
+        log-path: "/tmp/logs/xxljob/jobhandler"
+        log-retention-days: 7
+
+      cache:
+        key: "xxljob:autoregister:authentication:global:cookie"
+        expire-seconds: 3600
+
+      lock:
+        key: "xxljob:autoregister:authentication:global:lock"
+
+      group:
+        appname: "${spring.application.name}"
+        title: "Autoregister"
+        address-type: 0
+        # addressList:

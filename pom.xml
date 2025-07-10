@@ -23,6 +23,9 @@
     <inceptionYear>2025</inceptionYear>
 
     <modules>
+        <module>xxljob-autoregister-bom</module>
+        <module>xxljob-autoregister-parent</module>
+
         <module>xxljob-autoregister-autoconfigure</module>
         <module>xxljob-autoregister-core</module>
         <module>xxljob-autoregister-http</module>
@@ -30,6 +33,7 @@
         <module>xxljob-autoregister-register</module>
         <module>xxljob-autoregister-spring-boot-starter</module>
         <module>xxljob-autoregister-storage</module>
+        <module>xxljob-autoregister-test</module>
     </modules>
 
     <licenses>
@@ -86,6 +90,7 @@
 
         <xxljob.version>3.1.1</xxljob.version>
         <caffeine.version>3.2.1</caffeine.version>
+        <redisson.version>3.50.0</redisson.version>
     </properties>
     <!-- @formatter:on -->
 
@@ -134,6 +139,11 @@
                 <artifactId>xxljob-autoregister-lock-reentrantLock</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>io.github.photowey</groupId>
+                <artifactId>xxljob-autoregister-lock-redisson</artifactId>
+                <version>${project.version}</version>
+            </dependency>
 
             <dependency>
                 <groupId>io.github.photowey</groupId>
@@ -173,6 +183,12 @@
                 <groupId>com.github.ben-manes.caffeine</groupId>
                 <artifactId>caffeine</artifactId>
                 <version>${caffeine.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.redisson</groupId>
+                <artifactId>redisson-spring-boot-starter</artifactId>
+                <version>${redisson.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

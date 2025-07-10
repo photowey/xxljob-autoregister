@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>io.github.photowey</groupId>
+        <artifactId>xxljob-autoregister</artifactId>
+        <version>${reversion}</version>
+    </parent>
+
+    <artifactId>xxljob-autoregister-bom</artifactId>
+
+    <name>xxljob-autoregister-bom</name>
+    <description>Bom project for xxljob-autoregister</description>
+    <packaging>pom</packaging>
+
+    <properties>
+    </properties>
+
+    <dependencies>
+    </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>io.github.photowey</groupId>
+                <artifactId>xxljob-autoregister-autoconfigure</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.photowey</groupId>
+                <artifactId>xxljob-autoregister-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.github.photowey</groupId>
+                <artifactId>xxljob-autoregister-http-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.photowey</groupId>
+                <artifactId>xxljob-autoregister-http-rest-template</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.github.photowey</groupId>
+                <artifactId>xxljob-autoregister-lock-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.photowey</groupId>
+                <artifactId>xxljob-autoregister-lock-reentrantLock</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.photowey</groupId>
+                <artifactId>xxljob-autoregister-lock-redisson</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.github.photowey</groupId>
+                <artifactId>xxljob-autoregister-register</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.photowey</groupId>
+                <artifactId>xxljob-autoregister-spring-boot-starter</artifactId>
+                <version>${project.version}</version>
+                <type>pom</type>
+            </dependency>
+
+            <dependency>
+                <groupId>io.github.photowey</groupId>
+                <artifactId>xxljob-autoregister-storage-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.photowey</groupId>
+                <artifactId>xxljob-autoregister-storage-caffeine</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.photowey</groupId>
+                <artifactId>xxljob-autoregister-storage-redis</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.xuxueli</groupId>
+                <artifactId>xxl-job-core</artifactId>
+                <version>${xxljob.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.github.ben-manes.caffeine</groupId>
+                <artifactId>caffeine</artifactId>
+                <version>${caffeine.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.redisson</groupId>
+                <artifactId>redisson-spring-boot-starter</artifactId>
+                <version>${redisson.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <plugins>
+        </plugins>
+    </build>
+
+</project>

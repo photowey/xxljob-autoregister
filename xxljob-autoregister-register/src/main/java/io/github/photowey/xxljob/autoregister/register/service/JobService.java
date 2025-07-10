@@ -16,6 +16,15 @@
  */
 package io.github.photowey.xxljob.autoregister.register.service;
 
+import io.github.photowey.xxljob.autoregister.core.domain.dto.JobDTO;
+import io.github.photowey.xxljob.autoregister.core.domain.payload.JobAddPayload;
+import io.github.photowey.xxljob.autoregister.core.getter.XxljobPropertiesGetter;
+import io.github.photowey.xxljob.autoregister.register.context.RegisterContext;
+import io.github.photowey.xxljob.autoregister.register.engine.RegisterEngineGetter;
+import java.util.List;
+import java.util.function.Consumer;
+import org.springframework.util.MultiValueMap;
+
 /**
  * {@code XxljobJobService}.
  *
@@ -23,6 +32,28 @@ package io.github.photowey.xxljob.autoregister.register.service;
  * @version 3.1.1.1.0.0
  * @since 2025/07/09
  */
-public interface JobService {
-    // TODO
+public interface JobService extends RegisterEngineGetter, XxljobPropertiesGetter {
+
+    /**
+     * Add job.
+     *
+     * @param payload {@link JobAddPayload}
+     * @return jobId
+     */
+    Integer add(JobAddPayload payload);
+
+    // ----------------------------------------------------------------
+
+    default List<JobDTO> groupJobs(Integer groupId, String executorHandler) {
+        // @formatter:off
+        return this.groupJobs(groupId, executorHandler, (x) -> { });
+        // @formatter:on
+    }
+
+    List<JobDTO> groupJobs(Integer groupId, String executorHandler, Consumer<MultiValueMap<String, Object>> fx);
+
+    // ----------------------------------------------------------------
+
+    void triggerAutoRegister(RegisterContext ctx);
+
 }

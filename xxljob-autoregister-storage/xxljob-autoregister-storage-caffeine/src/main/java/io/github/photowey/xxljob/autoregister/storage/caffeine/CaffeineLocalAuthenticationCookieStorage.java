@@ -17,9 +17,11 @@
 package io.github.photowey.xxljob.autoregister.storage.caffeine;
 
 import com.github.benmanes.caffeine.cache.Cache;
-import io.github.photowey.xxljob.autoregister.core.holder.AbstractBeanFactoryHolder;
+import io.github.photowey.xxljob.autoregister.core.event.LoadAuthenticationCookieEvent;
+import io.github.photowey.xxljob.autoregister.core.holder.AbstractApplicationContextHolder;
 import io.github.photowey.xxljob.autoregister.storage.api.LocalAuthenticationCookieStorage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 
 /**
  * {@code CaffeineLocalAuthenticationCookieStorage}.
@@ -29,7 +31,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @since 2025/07/09
  */
 public class CaffeineLocalAuthenticationCookieStorage
-    extends AbstractBeanFactoryHolder
+    extends AbstractApplicationContextHolder
     implements LocalAuthenticationCookieStorage {
 
     @Autowired
@@ -44,6 +46,21 @@ public class CaffeineLocalAuthenticationCookieStorage
 
     @Override
     public String tryAcquire(String cacheKey) {
+        String cookie = this.tryFastAcquire(cacheKey);
+        if (StringUtils.hasText(cookie)) {
+            return cookie;
+        }
+
+        LoadAuthenticationCookieEvent event = new LoadAuthenticationCookieEvent();
+        this.applicationContext().publishEvent(event);
+        if (StringUtils.hasText(event.cookie())) {
+            return event.cookie();
+        }
+        return this.cache.getIfPresent(cacheKey);
+    }
+
+    @Override
+    public String tryFastAcquire(String cacheKey) {
         return this.cache.getIfPresent(cacheKey);
     }
 }

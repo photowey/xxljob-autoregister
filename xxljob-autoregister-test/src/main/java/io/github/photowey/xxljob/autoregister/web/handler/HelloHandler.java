@@ -117,4 +117,34 @@ public class HelloHandler {
         log.info("Hello autoScheduleTask");
     }
 
+    @AutoJob(
+        job = @AutoJob.Job(
+            value = "${local.config.job.handler}",
+            enabled = true
+        ),
+        base = @AutoJob.Base(
+            description = "spelScheduleTask",
+            author = "${local.config.job.base.author}",
+            email = "${local.config.job.base.email}"
+        ),
+        schedule = @AutoJob.Schedule(
+            scheduleType = RegisterDictionary.ScheduleType.CRON,
+            scheduleConf = "${local.config.job.schedule.cron}"
+        ),
+        task = @AutoJob.Task(
+            handler = "${local.config.job.handler}",
+            arguments = "xxljob://spel?cron=${local.config.job.schedule.cron}"
+        ),
+        advanced = @AutoJob.Advanced(
+            routeStrategy = RegisterDictionary.RouteStrategy.FIRST,
+            misfireStrategy = RegisterDictionary.MisfireStrategy.DO_NOTHING,
+            blockStrategy = RegisterDictionary.BlockStrategy.SERIAL_EXECUTION,
+            executorTimeout = 0,
+            executorFailRetryCount = 0
+        ),
+        triggerStatus = 1
+    )
+    public void spelScheduleTask() {
+        log.info("Hello spelScheduleTask");
+    }
 }

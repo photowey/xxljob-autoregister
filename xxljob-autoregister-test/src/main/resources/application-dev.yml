@@ -30,3 +30,13 @@ xxljob:
         title: "Autoregister"
         address-type: 0
         # addressList:
+
+local:
+  config:
+    job:
+      handler: "io.github.photowey.xxljob.autoregister.web.handler.HelloHandler#spelScheduleTask"
+      base:
+        author: "photowey"
+        email: "photowey@gmail.com"
+      schedule:
+        cron: "0/10 * * * * ? *"

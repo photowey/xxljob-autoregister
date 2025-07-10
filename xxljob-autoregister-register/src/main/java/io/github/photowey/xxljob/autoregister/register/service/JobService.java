@@ -21,6 +21,7 @@ import java.util.function.Consumer;
 
 import io.github.photowey.xxljob.autoregister.core.domain.dto.JobDTO;
 import io.github.photowey.xxljob.autoregister.core.domain.payload.JobAddPayload;
+import io.github.photowey.xxljob.autoregister.core.getter.EnvironmentGetter;
 import io.github.photowey.xxljob.autoregister.core.getter.XxljobPropertiesGetter;
 import io.github.photowey.xxljob.autoregister.register.context.RegisterContext;
 import io.github.photowey.xxljob.autoregister.register.engine.RegisterEngineGetter;
@@ -33,7 +34,7 @@ import org.springframework.util.MultiValueMap;
  * @version 3.1.1.1.0.0
  * @since 2025/07/09
  */
-public interface JobService extends RegisterEngineGetter, XxljobPropertiesGetter {
+public interface JobService extends RegisterEngineGetter, XxljobPropertiesGetter, EnvironmentGetter {
 
     /**
      * Add job.

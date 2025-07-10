@@ -25,6 +25,7 @@ import io.github.photowey.xxljob.autoregister.core.domain.http.HttpResponse;
 import io.github.photowey.xxljob.autoregister.core.domain.http.XxljobPageResponse;
 import io.github.photowey.xxljob.autoregister.core.domain.http.XxljobResponse;
 import io.github.photowey.xxljob.autoregister.core.domain.payload.GroupAddPayload;
+import io.github.photowey.xxljob.autoregister.core.exception.XxljobRpcException;
 import io.github.photowey.xxljob.autoregister.core.holder.AbstractBeanFactoryHolder;
 import io.github.photowey.xxljob.autoregister.register.context.RegisterContext;
 import io.github.photowey.xxljob.autoregister.register.service.GroupService;
@@ -56,8 +57,6 @@ public class GroupServiceImpl extends AbstractBeanFactoryHolder implements Group
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
         String api = this.xxljobProperties().admin().wrapApi(XxljobConstants.Api.GROUP_ADD);
-
-        // TODO handle BAD_REQUEST response?
         HttpResponse<XxljobResponse<String>> response = this.registerEngine()
             .requestExecutor()
             .post(api, formData, headers, (body) -> {
@@ -67,12 +66,11 @@ public class GroupServiceImpl extends AbstractBeanFactoryHolder implements Group
                 // @formatter:on
             });
 
-        boolean ok = response.determineIsSuccessful();
-        if (ok) {
-            return ok;
+        if (response.determineIsSuccessful()) {
+            return true;
         }
 
-        throw new RuntimeException("xxljob: add group failed,info:" + response.body().message());
+        throw new XxljobRpcException("xxljob: add group failed,message:%s", response.body().message());
     }
 
     @Override
@@ -83,7 +81,6 @@ public class GroupServiceImpl extends AbstractBeanFactoryHolder implements Group
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
         String api = this.xxljobProperties().admin().wrapApi(XxljobConstants.Api.GROUP_PAGE_LIST);
-        // TODO handle BAD_REQUEST response?
         HttpResponse<XxljobPageResponse<GroupDTO>> response = this.registerEngine()
             .requestExecutor()
             .post(api, formData, headers, (body) -> {
@@ -139,16 +136,15 @@ public class GroupServiceImpl extends AbstractBeanFactoryHolder implements Group
 
     private MultiValueMap<String, Object> populateAddFormDataBody(GroupAddPayload payload) {
         MultiValueMap<String, Object> multiValueMap = new LinkedMultiValueMap<>(8);
-        multiValueMap.add("appname", payload.appname());
-        multiValueMap.add("title", payload.title());
-        multiValueMap.add("addressType", payload.addressType());
+        multiValueMap.add(XxljobConstants.Field.GROUP_APP_NAME, payload.appname());
+        multiValueMap.add(XxljobConstants.Field.GROUP_TITLE, payload.title());
+        multiValueMap.add(XxljobConstants.Field.GROUP_ADDRESS_TYPE, payload.addressType());
         if (payload.determineIsManual()) {
             if (StringUtils.hasText(payload.addressList())) {
-                multiValueMap.add("addressList", payload.addressList());
+                multiValueMap.add(XxljobConstants.Field.GROUP_ADDRESS_LIST, payload.addressList());
             } else {
-                throw new RuntimeException("xxljob: addressType == 1, the addressList can't be empty");
+                throw new XxljobRpcException("xxljob: addressType == 1, the addressList can't be empty");
             }
-
         }
 
         return multiValueMap;
@@ -156,8 +152,8 @@ public class GroupServiceImpl extends AbstractBeanFactoryHolder implements Group
 
     private MultiValueMap<String, Object> populatePageFormDataBody() {
         MultiValueMap<String, Object> multiValueMap = new LinkedMultiValueMap<>(4);
-        multiValueMap.add("appname", this.xxljobProperties().group().appname());
-        multiValueMap.add("title", this.xxljobProperties().group().title());
+        multiValueMap.add(XxljobConstants.Field.GROUP_APP_NAME, this.xxljobProperties().group().appname());
+        multiValueMap.add(XxljobConstants.Field.GROUP_TITLE, this.xxljobProperties().group().title());
 
         return multiValueMap;
     }

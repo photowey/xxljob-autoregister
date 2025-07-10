@@ -21,6 +21,7 @@ import java.util.Optional;
 
 import io.github.photowey.xxljob.autoregister.core.constant.XxljobConstants;
 import io.github.photowey.xxljob.autoregister.core.domain.http.HttpResponse;
+import io.github.photowey.xxljob.autoregister.core.exception.XxljobRpcException;
 import io.github.photowey.xxljob.autoregister.core.holder.AbstractBeanFactoryHolder;
 import io.github.photowey.xxljob.autoregister.core.property.XxljobProperties;
 import io.github.photowey.xxljob.autoregister.register.service.LoginService;
@@ -103,18 +104,18 @@ public class LoginServiceImpl extends AbstractBeanFactoryHolder implements Login
                 return cookie.getValue();
             }
 
-            throw new RuntimeException("xxljob: the login authentication cookie not found");
+            throw new XxljobRpcException("xxljob: the login authentication cookie not found");
         }
 
-        throw new RuntimeException("xxljob: login failed,the response:[" + responseEntity.body() + "]");
+        throw new XxljobRpcException("xxljob: login failed,the response:[%s]", responseEntity.body());
     }
 
     private MultiValueMap<String, Object> populateFormDataBody() {
         XxljobProperties properties = this.registerEngine().xxljobProperties();
 
         MultiValueMap<String, Object> body = new LinkedMultiValueMap<>(4);
-        body.add("userName", properties.authentication().username());
-        body.add("password", properties.authentication().password());
+        body.add(XxljobConstants.Field.ADMIN_USER_NANE, properties.authentication().username());
+        body.add(XxljobConstants.Field.ADMIN_PASSWORD, properties.authentication().password());
 
         return body;
     }

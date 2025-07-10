@@ -54,7 +54,6 @@ public class JobAddPayload implements Serializable {
 
     protected String scheduleType;
     protected String scheduleConf;
-    protected int fixRate;
 
     // ---------------------------------------------------------------- Task
 

@@ -21,11 +21,13 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import io.github.photowey.xxljob.autoregister.core.exception.XxljobRpcException;
 import io.github.photowey.xxljob.autoregister.register.context.DefaultRegisterContext;
 import io.github.photowey.xxljob.autoregister.register.context.RegisterContext;
 import io.github.photowey.xxljob.autoregister.register.engine.RegisterEngineGetter;
 import lombok.Getter;
 import lombok.experimental.Accessors;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
@@ -40,6 +42,7 @@ import org.springframework.context.event.ContextRefreshedEvent;
  * @version 3.1.1.1.0.0
  * @since 2025/07/10
  */
+@Slf4j
 @Getter
 @Accessors(fluent = true)
 public class AutoRegisterBeanDefinitionRegistryPostProcessor implements BeanDefinitionRegistryPostProcessor,
@@ -70,6 +73,9 @@ public class AutoRegisterBeanDefinitionRegistryPostProcessor implements BeanDefi
         }
     }
 
+    /**
+     * Async register if Necessary.
+     */
     private void triggerAutoRegisterIfNecessaryAsync() {
         CompletableFuture.runAsync(this::triggerAutoRegisterIfNecessary, this.taskExecutor);
     }
@@ -77,8 +83,9 @@ public class AutoRegisterBeanDefinitionRegistryPostProcessor implements BeanDefi
     private void triggerAutoRegisterIfNecessary() {
         try {
             this.onAutoRegisterIfNecessary();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        } catch (Throwable e) {
+            log.error("xxljob: trigger auto register failed", e);
+            throw new XxljobRpcException(e);
         }
     }
 

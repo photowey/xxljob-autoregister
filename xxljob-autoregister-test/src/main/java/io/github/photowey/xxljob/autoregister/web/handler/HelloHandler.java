@@ -42,7 +42,7 @@ public class HelloHandler {
         ),
         schedule = @AutoJob.Schedule(
             scheduleType = RegisterDictionary.ScheduleType.CRON,
-            cron = "0/10 * * * * ? *"
+            scheduleConf = "0/10 * * * * ? *"
         ),
         advanced = @AutoJob.Advanced(
             routeStrategy = RegisterDictionary.RouteStrategy.FIRST,
@@ -68,7 +68,7 @@ public class HelloHandler {
         ),
         schedule = @AutoJob.Schedule(
             scheduleType = RegisterDictionary.ScheduleType.CRON,
-            cron = "0/10 * * * * ? *"
+            scheduleConf = "0/10 * * * * ? *"
         ),
         task = @AutoJob.Task(
             handler = "io.github.photowey.xxljob.autoregister.web.handler.HelloHandler#proxyScheduleTask",
@@ -98,7 +98,7 @@ public class HelloHandler {
         ),
         schedule = @AutoJob.Schedule(
             scheduleType = RegisterDictionary.ScheduleType.CRON,
-            cron = "0/10 * * * * ? *"
+            scheduleConf = "0/10 * * * * ? *"
         ),
         task = @AutoJob.Task(
             handler = "io.github.photowey.xxljob.autoregister.web.handler.HelloHandler#autoScheduleTask",

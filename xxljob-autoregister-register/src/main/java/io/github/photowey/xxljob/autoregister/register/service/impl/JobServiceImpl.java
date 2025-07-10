@@ -34,7 +34,8 @@ import io.github.photowey.xxljob.autoregister.core.domain.http.HttpResponse;
 import io.github.photowey.xxljob.autoregister.core.domain.http.XxljobPageResponse;
 import io.github.photowey.xxljob.autoregister.core.domain.http.XxljobResponse;
 import io.github.photowey.xxljob.autoregister.core.domain.payload.JobAddPayload;
-import io.github.photowey.xxljob.autoregister.core.holder.AbstractBeanFactoryHolder;
+import io.github.photowey.xxljob.autoregister.core.exception.XxljobRpcException;
+import io.github.photowey.xxljob.autoregister.core.holder.AbstractEnvironmentHolder;
 import io.github.photowey.xxljob.autoregister.register.annotation.AutoJob;
 import io.github.photowey.xxljob.autoregister.register.context.RegisterContext;
 import io.github.photowey.xxljob.autoregister.register.service.JobService;
@@ -47,6 +48,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.util.ReflectionUtils;
 import org.springframework.util.StringUtils;
 
 /**
@@ -58,7 +60,7 @@ import org.springframework.util.StringUtils;
  */
 @Slf4j
 @Service
-public class JobServiceImpl extends AbstractBeanFactoryHolder implements JobService {
+public class JobServiceImpl extends AbstractEnvironmentHolder implements JobService {
 
     @Override
     public Integer add(JobAddPayload payload) {
@@ -68,8 +70,6 @@ public class JobServiceImpl extends AbstractBeanFactoryHolder implements JobServ
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
         String api = this.xxljobProperties().admin().wrapApi(XxljobConstants.Api.JOB_INFO_ADD);
-
-        // TODO handle BAD_REQUEST response?
         HttpResponse<XxljobResponse<Integer>> response = this.registerEngine()
             .requestExecutor()
             .post(api, formData, headers, (body) -> {
@@ -93,7 +93,6 @@ public class JobServiceImpl extends AbstractBeanFactoryHolder implements JobServ
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
         String api = this.xxljobProperties().admin().wrapApi(XxljobConstants.Api.GROUP_JOB_PAGE_LIST);
-        // TODO handle BAD_REQUEST response?
         HttpResponse<XxljobPageResponse<JobDTO>> response = this.registerEngine()
             .requestExecutor()
             .post(api, formData, headers, (body) -> {
@@ -143,15 +142,14 @@ public class JobServiceImpl extends AbstractBeanFactoryHolder implements JobServ
     }
 
     private void handleProxy(Object bean, Set<String> methods, GroupDTO group) {
-        Map<Method, AutoJob> singleAutoJobMethods = MethodIntrospector.selectMethods(bean.getClass(),
-            new MethodIntrospector.MetadataLookup<AutoJob>() {
-                @Override
-                public AutoJob inspect(Method method) {
-                    return AnnotatedElementUtils.findMergedAnnotation(method, AutoJob.class);
-                }
-            });
+        Map<Method, AutoJob> proxiedAutoJobMethods = MethodIntrospector.selectMethods(
+            bean.getClass(),
+            (MethodIntrospector.MetadataLookup<AutoJob>) method -> {
+                return AnnotatedElementUtils.findMergedAnnotation(method, AutoJob.class);
+            }
+        );
 
-        for (Map.Entry<Method, AutoJob> kvs : singleAutoJobMethods.entrySet()) {
+        for (Map.Entry<Method, AutoJob> kvs : proxiedAutoJobMethods.entrySet()) {
             Method executeMethod = kvs.getKey();
             String methodName = executeMethod.getName();
             if (methods.contains(methodName)) {
@@ -161,24 +159,26 @@ public class JobServiceImpl extends AbstractBeanFactoryHolder implements JobServ
             methods.add(methodName);
             AutoJob autoJob = kvs.getValue();
 
+            String executorHandler = this.resolvePlaceholders(autoJob.job().value());
+
             // @see com.xxl.job.admin.controller.JobInfoController#pageList
-            List<JobDTO> jobs = this.groupJobs(group.getId(), autoJob.job().value(), (ctx) -> {
-                ctx.add("jobDesc", autoJob.base().description());
-                ctx.add("author", autoJob.base().author());
+            List<JobDTO> jobs = this.groupJobs(group.getId(), executorHandler, (ctx) -> {
+                ctx.add(XxljobConstants.Field.JOB_DESC, this.resolvePlaceholders(autoJob.base().description()));
+                ctx.add(XxljobConstants.Field.AUTHOR, this.resolvePlaceholders(autoJob.base().author()));
             });
 
             JobAddPayload payload = this.toJobAddPayload(group, autoJob);
 
-            boolean matches = false;
+            boolean registerd = false;
             if (!CollectionUtils.isEmpty(jobs)) {
-                boolean matched = jobs.stream()
-                    .allMatch(it -> it.executorHandler().equals(autoJob.job().value()));
-                if (matched) {
-                    matches = true;
+                boolean matches = jobs.stream()
+                    .allMatch(it -> it.executorHandler().equals(executorHandler));
+                if (matches) {
+                    registerd = true;
                 }
             }
 
-            if (!matches) {
+            if (!registerd) {
                 this.add(payload);
             }
 
@@ -190,8 +190,7 @@ public class JobServiceImpl extends AbstractBeanFactoryHolder implements JobServ
     private MethodJobHandler populateMethodJobHandler(Object bean, Method executeMethod, AutoJob autoJob) {
         Class<?> clazz = bean.getClass();
         String methodName = executeMethod.getName();
-
-        executeMethod.setAccessible(true);
+        ReflectionUtils.makeAccessible(executeMethod);
 
         Method initMethod = null;
         Method destroyMethod = null;
@@ -199,18 +198,18 @@ public class JobServiceImpl extends AbstractBeanFactoryHolder implements JobServ
         if (StringUtils.hasText(autoJob.job().init().trim())) {
             try {
                 initMethod = clazz.getDeclaredMethod(autoJob.job().init());
-                initMethod.setAccessible(true);
+                ReflectionUtils.makeAccessible(initMethod);
             } catch (NoSuchMethodException e) {
-                throw new RuntimeException(
+                throw new XxljobRpcException(
                     "xxl-job method-jobhandler initMethod invalid, for[" + clazz + "#" + methodName + "] .");
             }
         }
         if (StringUtils.hasText(autoJob.job().destroy().trim())) {
             try {
                 destroyMethod = clazz.getDeclaredMethod(autoJob.job().destroy());
-                destroyMethod.setAccessible(true);
+                ReflectionUtils.makeAccessible(destroyMethod);
             } catch (NoSuchMethodException e) {
-                throw new RuntimeException(
+                throw new XxljobRpcException(
                     "xxl-job method-jobhandler destroyMethod invalid, for[" + clazz + "#" + methodName + "] .");
             }
         }
@@ -219,13 +218,12 @@ public class JobServiceImpl extends AbstractBeanFactoryHolder implements JobServ
     }
 
     private void handleMixed(Object bean, Set<String> methods, GroupDTO group) {
-        Map<Method, XxlJob> mixedXxljobAnnotatedMethods = MethodIntrospector.selectMethods(bean.getClass(),
-            new MethodIntrospector.MetadataLookup<XxlJob>() {
-                @Override
-                public XxlJob inspect(Method method) {
-                    return AnnotatedElementUtils.findMergedAnnotation(method, XxlJob.class);
-                }
-            });
+        Map<Method, XxlJob> mixedXxljobAnnotatedMethods = MethodIntrospector.selectMethods(
+            bean.getClass(),
+            (MethodIntrospector.MetadataLookup<XxlJob>) method -> {
+                return AnnotatedElementUtils.findMergedAnnotation(method, XxlJob.class);
+            }
+        );
 
         for (Map.Entry<Method, XxlJob> kvs : mixedXxljobAnnotatedMethods.entrySet()) {
             Method executeMethod = kvs.getKey();
@@ -235,14 +233,16 @@ public class JobServiceImpl extends AbstractBeanFactoryHolder implements JobServ
 
             if (executeMethod.isAnnotationPresent(AutoJob.class)) {
                 AutoJob autoJob = executeMethod.getAnnotation(AutoJob.class);
-                List<JobDTO> jobs = this.groupJobs(group.getId(), xxlJob.value(), (ctx) -> {
-                    ctx.add("jobDesc", autoJob.base().description());
-                    ctx.add("author", autoJob.base().author());
+                String executorHandler = this.resolvePlaceholders(xxlJob.value());
+
+                List<JobDTO> jobs = this.groupJobs(group.getId(), executorHandler, (ctx) -> {
+                    ctx.add(XxljobConstants.Field.JOB_DESC, this.resolvePlaceholders(autoJob.base().description()));
+                    ctx.add(XxljobConstants.Field.AUTHOR, this.resolvePlaceholders(autoJob.base().author()));
                 });
                 if (!CollectionUtils.isEmpty(jobs)) {
-                    boolean matched = jobs.stream()
-                        .allMatch(it -> it.executorHandler().equals(xxlJob.value()));
-                    if (matched) {
+                    boolean matches = jobs.stream()
+                        .allMatch(it -> it.executorHandler().equals(executorHandler));
+                    if (matches) {
                         continue;
                     }
                 }
@@ -256,19 +256,18 @@ public class JobServiceImpl extends AbstractBeanFactoryHolder implements JobServ
     private JobAddPayload toJobAddPayload(GroupDTO group, XxlJob xxlJob, AutoJob autoJob) {
         return JobAddPayload.builder()
             .jobGroup(group.getId())
-            .jobDesc(autoJob.base().description())
-            .author(autoJob.base().author())
-            .alarmEmail(autoJob.base().email())
+            .jobDesc(this.resolvePlaceholders(autoJob.base().description()))
+            .author(this.resolvePlaceholders(autoJob.base().author()))
+            .alarmEmail(this.resolvePlaceholders(autoJob.base().email()))
             .scheduleType(autoJob.schedule().scheduleType().name())
-            .scheduleConf(autoJob.schedule().cron())
-            .fixRate(autoJob.schedule().fixRate())
+            .scheduleConf(this.resolvePlaceholders(autoJob.schedule().scheduleConf()))
             .glueType(autoJob.task().glueType().name())
             // ----------------------------------------------------------------
-            .executorHandler(xxlJob.value())
+            .executorHandler(this.resolvePlaceholders(xxlJob.value()))
             // ----------------------------------------------------------------
-            .executorParam(autoJob.task().arguments())
+            .executorParam(this.resolvePlaceholders(autoJob.task().arguments()))
             .executorRouteStrategy(autoJob.advanced().routeStrategy().name())
-            .childJobId(autoJob.advanced().childJobId())
+            .childJobId(this.resolvePlaceholders(autoJob.advanced().childJobId()))
             .misfireStrategy(autoJob.advanced().misfireStrategy().name())
             .executorBlockStrategy(autoJob.advanced().blockStrategy().name())
             .executorTimeout(autoJob.advanced().executorTimeout())
@@ -278,23 +277,24 @@ public class JobServiceImpl extends AbstractBeanFactoryHolder implements JobServ
     }
 
     private JobAddPayload toJobAddPayload(GroupDTO group, AutoJob autoJob) {
-        String handler = autoJob.task().handler();
-
+        String handler = this.resolvePlaceholders(autoJob.task().handler());
+        String executorHandler = StringUtils.hasText(handler)
+            ? handler
+            : this.resolvePlaceholders(autoJob.job().value());
         return JobAddPayload.builder()
             .jobGroup(group.getId())
-            .jobDesc(autoJob.base().description())
-            .author(autoJob.base().author())
-            .alarmEmail(autoJob.base().email())
+            .jobDesc(this.resolvePlaceholders(autoJob.base().description()))
+            .author(this.resolvePlaceholders(autoJob.base().author()))
+            .alarmEmail(this.resolvePlaceholders(autoJob.base().email()))
             .scheduleType(autoJob.schedule().scheduleType().name())
-            .scheduleConf(autoJob.schedule().cron())
-            .fixRate(autoJob.schedule().fixRate())
+            .scheduleConf(this.resolvePlaceholders(autoJob.schedule().scheduleConf()))
             .glueType(autoJob.task().glueType().name())
             // ----------------------------------------------------------------
-            .executorHandler(StringUtils.hasText(handler) ? handler : autoJob.job().value())
+            .executorHandler(executorHandler)
             // ----------------------------------------------------------------
-            .executorParam(autoJob.task().arguments())
+            .executorParam(this.resolvePlaceholders(autoJob.task().arguments()))
             .executorRouteStrategy(autoJob.advanced().routeStrategy().name())
-            .childJobId(autoJob.advanced().childJobId())
+            .childJobId(this.resolvePlaceholders(autoJob.advanced().childJobId()))
             .misfireStrategy(autoJob.advanced().misfireStrategy().name())
             .executorBlockStrategy(autoJob.advanced().blockStrategy().name())
             .executorTimeout(autoJob.advanced().executorTimeout())
@@ -321,9 +321,9 @@ public class JobServiceImpl extends AbstractBeanFactoryHolder implements JobServ
 
     private MultiValueMap<String, Object> populatePageFormDataBody(Integer groupId, String executorHandler) {
         MultiValueMap<String, Object> multiValueMap = new LinkedMultiValueMap<>(4);
-        multiValueMap.add("jobGroup", groupId);
-        multiValueMap.add("executorHandler", executorHandler);
-        multiValueMap.add("triggerStatus", -1);
+        multiValueMap.add(XxljobConstants.Field.JOB_GROUP, groupId);
+        multiValueMap.add(XxljobConstants.Field.EXECUTOR_HANDLER, executorHandler);
+        multiValueMap.add(XxljobConstants.Field.TRIGGER_STATUS, -1);
 
         return multiValueMap;
     }

@@ -18,6 +18,7 @@ package io.github.photowey.xxljob.autoregister.core.getter;
 
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.Environment;
+import org.springframework.util.StringUtils;
 
 /**
  * {@code EnvironmentGetter}.
@@ -42,5 +43,19 @@ public interface EnvironmentGetter {
      */
     default ConfigurableEnvironment configurableEnvironment() {
         return (ConfigurableEnvironment) this.environment();
+    }
+
+    /**
+     * Resolve placeholders.
+     *
+     * @param txt the text
+     * @return the resolved text
+     */
+    default String resolvePlaceholders(String txt) {
+        if (StringUtils.hasText(txt)) {
+            return this.environment().resolvePlaceholders(txt);
+        }
+
+        return txt;
     }
 }

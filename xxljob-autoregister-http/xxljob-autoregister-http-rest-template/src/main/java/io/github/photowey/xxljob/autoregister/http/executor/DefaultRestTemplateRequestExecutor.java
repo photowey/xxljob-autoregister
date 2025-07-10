@@ -52,7 +52,7 @@ public class DefaultRestTemplateRequestExecutor
     implements RestTemplateRequestExecutor {
 
     private static final Pattern BAD_REQUEST_RESPONSE_PATTERN =
-        Pattern.compile("\\{\"code\"\\s*:\\s*500\\s*,\\s*\"msg\"\\s*:\\s*\"(.*)\",.*}");
+        Pattern.compile("\\{\"code\"\\s*:\\s*500\\s*,\\s*\"msg\"\\s*:\\s*\"(.*)\"(,.*)}");
 
     @Autowired
     private RestTemplate restTemplate;
@@ -125,19 +125,18 @@ public class DefaultRestTemplateRequestExecutor
         HttpEntity<MultiValueMap<String, Object>> request = new HttpEntity<>(body, headers);
         ResponseEntity<String> response = this.restTemplate.postForEntity(url, request, String.class);
         String responseBody = response.getBody();
-
-        if (HttpStatus.OK != response.getStatusCode()) {
-            throw new XxljobRpcException("xxljob: remote request failed, message:" + responseBody);
-        }
-
         if (log.isDebugEnabled()) {
             log.debug("xxljob: request admin API:[{}] response is:[{}]", url, responseBody);
         }
 
-        Matcher matcher = BAD_REQUEST_RESPONSE_PATTERN.matcher(responseBody);
+        if (HttpStatus.OK != response.getStatusCode()) {
+            throw new XxljobRpcException("xxljob: remote request failed, message:[%s]", responseBody);
+        }
+
+        Matcher matcher = BAD_REQUEST_RESPONSE_PATTERN.matcher(Objects.requireNonNull(responseBody));
         if (matcher.matches()) {
             String message = matcher.group(1);
-            throw new XxljobRpcException("xxljob: remote request failed, message:" + message);
+            throw new XxljobRpcException("xxljob: remote request failed, message:[%s]", message);
         }
 
         HttpHeaders responseHeaders = response.getHeaders();
@@ -165,7 +164,7 @@ public class DefaultRestTemplateRequestExecutor
             String cookie =
                 String.format("%s=%s", XxljobConstants.Cookie.XXLJOB_AUTHENTICATION_COOKIE_NAME, cookieValue);
 
-            headers.put(HttpHeaders.COOKIE, List.of(cookie));
+            headers.add(HttpHeaders.COOKIE, cookie);
         }
     }
 }

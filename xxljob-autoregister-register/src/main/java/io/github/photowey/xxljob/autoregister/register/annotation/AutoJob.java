@@ -34,11 +34,11 @@ import io.github.photowey.xxljob.autoregister.core.enums.RegisterDictionary;
 @Inherited
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE/*@Inherited*/, ElementType.METHOD})
-// @XxlJob Unsupported now.
 public @interface AutoJob {
 
-    // Unsupported now.
-    // @XxlJob
+    // All string-type properties support SpEL.
+
+    // <- @XxlJob
     Job job() default @Job(
         value = "",
         enabled = false
@@ -80,14 +80,7 @@ public @interface AutoJob {
     @interface Schedule {
         RegisterDictionary.ScheduleType scheduleType() default RegisterDictionary.ScheduleType.CRON;
 
-        String cron() default "";
-
-        int fixRate() default 60;
-
-        /*
-         * Unsupported now.
-         */
-        /*int fixDelay() default 60;*/
+        String scheduleConf() default "";
     }
 
     @interface Task {

@@ -27,6 +27,7 @@ public interface XxljobConstants {
 
     interface Symbol {
         String SLASH = "/";
+        String EMPTY = "";
     }
 
     interface Api {
@@ -55,5 +56,22 @@ public interface XxljobConstants {
     interface Header {
         String SKIP = "SKIP";
         String SKIP_VALUE = "1";
+    }
+
+    interface Field {
+        String ADMIN_USER_NANE = "userName";
+        String ADMIN_PASSWORD = "password";
+
+        String JOB_GROUP = "jobGroup";
+        String JOB_DESC = "jobDesc";
+        String AUTHOR = "author";
+
+        String EXECUTOR_HANDLER = "executorHandler";
+        String TRIGGER_STATUS = "triggerStatus";
+
+        String GROUP_APP_NAME = "appname";
+        String GROUP_TITLE = "title";
+        String GROUP_ADDRESS_TYPE = "addressType";
+        String GROUP_ADDRESS_LIST = "addressList";
     }
 }

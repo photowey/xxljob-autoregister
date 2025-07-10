@@ -16,6 +16,13 @@
  */
 package io.github.photowey.xxljob.autoregister.register.service.impl;
 
+import java.lang.reflect.Method;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Consumer;
+
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.xxl.job.core.executor.XxlJobExecutor;
 import com.xxl.job.core.handler.annotation.XxlJob;
@@ -31,12 +38,6 @@ import io.github.photowey.xxljob.autoregister.core.holder.AbstractBeanFactoryHol
 import io.github.photowey.xxljob.autoregister.register.annotation.AutoJob;
 import io.github.photowey.xxljob.autoregister.register.context.RegisterContext;
 import io.github.photowey.xxljob.autoregister.register.service.JobService;
-import java.lang.reflect.Method;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.function.Consumer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.MethodIntrospector;
 import org.springframework.core.annotation.AnnotatedElementUtils;

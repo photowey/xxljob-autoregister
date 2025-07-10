@@ -16,13 +16,14 @@
  */
 package io.github.photowey.xxljob.autoregister.register.service;
 
+import java.util.List;
+import java.util.function.Consumer;
+
 import io.github.photowey.xxljob.autoregister.core.domain.dto.JobDTO;
 import io.github.photowey.xxljob.autoregister.core.domain.payload.JobAddPayload;
 import io.github.photowey.xxljob.autoregister.core.getter.XxljobPropertiesGetter;
 import io.github.photowey.xxljob.autoregister.register.context.RegisterContext;
 import io.github.photowey.xxljob.autoregister.register.engine.RegisterEngineGetter;
-import java.util.List;
-import java.util.function.Consumer;
 import org.springframework.util.MultiValueMap;
 
 /**

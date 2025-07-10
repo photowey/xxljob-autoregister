@@ -16,18 +16,19 @@
  */
 package io.github.photowey.xxljob.autoregister.http.executor;
 
-import io.github.photowey.xxljob.autoregister.core.constant.XxljobConstants;
-import io.github.photowey.xxljob.autoregister.core.domain.http.HttpResponse;
-import io.github.photowey.xxljob.autoregister.core.exception.XxljobRpcException;
-import io.github.photowey.xxljob.autoregister.core.holder.AbstractBeanFactoryHolder;
-import io.github.photowey.xxljob.autoregister.http.parser.HttpCookieParser;
-import io.github.photowey.xxljob.autoregister.storage.api.AuthenticationCookieStorage;
 import java.net.HttpCookie;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import io.github.photowey.xxljob.autoregister.core.constant.XxljobConstants;
+import io.github.photowey.xxljob.autoregister.core.domain.http.HttpResponse;
+import io.github.photowey.xxljob.autoregister.core.exception.XxljobRpcException;
+import io.github.photowey.xxljob.autoregister.core.holder.AbstractBeanFactoryHolder;
+import io.github.photowey.xxljob.autoregister.http.parser.HttpCookieParser;
+import io.github.photowey.xxljob.autoregister.storage.api.AuthenticationCookieStorage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;

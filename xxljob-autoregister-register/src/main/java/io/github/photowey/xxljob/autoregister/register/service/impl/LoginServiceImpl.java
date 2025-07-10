@@ -16,13 +16,14 @@
  */
 package io.github.photowey.xxljob.autoregister.register.service.impl;
 
+import java.net.HttpCookie;
+import java.util.Optional;
+
 import io.github.photowey.xxljob.autoregister.core.constant.XxljobConstants;
 import io.github.photowey.xxljob.autoregister.core.domain.http.HttpResponse;
 import io.github.photowey.xxljob.autoregister.core.holder.AbstractBeanFactoryHolder;
 import io.github.photowey.xxljob.autoregister.core.property.XxljobProperties;
 import io.github.photowey.xxljob.autoregister.register.service.LoginService;
-import java.net.HttpCookie;
-import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -81,7 +82,8 @@ public class LoginServiceImpl extends AbstractBeanFactoryHolder implements Login
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-        headers.add(XxljobConstants.Header.SKIP, "1");
+        // The cookie enhancement must be skipped.
+        headers.add(XxljobConstants.Header.SKIP, XxljobConstants.Header.SKIP_VALUE);
 
         String api = this.xxljobProperties().admin().wrapApi(XxljobConstants.Api.LOGIN);
         HttpResponse<String> responseEntity = this.registerEngine()

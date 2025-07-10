@@ -54,5 +54,6 @@ public interface XxljobConstants {
 
     interface Header {
         String SKIP = "SKIP";
+        String SKIP_VALUE = "1";
     }
 }

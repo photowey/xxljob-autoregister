@@ -16,10 +16,11 @@
  */
 package io.github.photowey.xxljob.autoregister.http.executor;
 
+import java.util.function.Function;
+
 import io.github.photowey.xxljob.autoregister.core.domain.http.HttpResponse;
 import io.github.photowey.xxljob.autoregister.core.getter.BeanFactoryGetter;
 import io.github.photowey.xxljob.autoregister.core.getter.XxljobPropertiesGetter;
-import java.util.function.Function;
 import org.springframework.core.Ordered;
 import org.springframework.http.HttpHeaders;
 import org.springframework.util.MultiValueMap;

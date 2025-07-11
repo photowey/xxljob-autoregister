@@ -18,6 +18,7 @@ package io.github.photowey.xxljob.autoregister.core.property;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import jakarta.validation.Valid;
@@ -28,6 +29,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 
@@ -43,7 +45,7 @@ import org.springframework.validation.annotation.Validated;
 @NoArgsConstructor
 @AllArgsConstructor
 @Validated
-public class XxljobProperties implements Serializable {
+public class XxljobProperties implements InitializingBean, Serializable {
 
     @Serial
     private static final long serialVersionUID = -3531038330534926057L;
@@ -63,6 +65,25 @@ public class XxljobProperties implements Serializable {
     private Lock lock = new Lock();
     @Valid
     private Group group = new Group();
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        this.checkExecutorAddress();
+    }
+
+    private void checkExecutorAddress() {
+        if (StringUtils.hasText(this.executor().address())) {
+            return;
+        }
+
+        if (!StringUtils.hasText(this.executor().ip())) {
+            throw new IllegalArgumentException("xxljob: executor ip can't be blank");
+        }
+
+        if (Objects.isNull(this.executor().port())) {
+            throw new IllegalArgumentException("xxljob: executor port can't be null");
+        }
+    }
 
     @Data
     @Builder
@@ -142,13 +163,14 @@ public class XxljobProperties implements Serializable {
         @Serial
         private static final long serialVersionUID = -5875792754347340180L;
 
-        private Integer timeout;
+        private Integer timeout = 30;
+        @NotBlank(message = "Xxljob: executor appname can't be blank")
         private String appname;
         private String address;
         private String ip;
         private Integer port;
-        private String logPath;
-        private Integer logRetentionDays;
+        private String logPath = "/var/logs/xxljob";
+        private Integer logRetentionDays = 30;
 
         // ----------------------------------------------------------------
 

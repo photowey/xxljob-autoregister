@@ -70,7 +70,7 @@ public class GroupServiceImpl extends AbstractBeanFactoryHolder implements Group
             return true;
         }
 
-        throw new XxljobRpcException("xxljob: add group failed,message:%s", response.body().message());
+        throw new XxljobRpcException("xxljob: add group failed, message:%s", response.body().message());
     }
 
     @Override
@@ -143,7 +143,7 @@ public class GroupServiceImpl extends AbstractBeanFactoryHolder implements Group
             if (StringUtils.hasText(payload.addressList())) {
                 multiValueMap.add(XxljobConstants.Field.GROUP_ADDRESS_LIST, payload.addressList());
             } else {
-                throw new XxljobRpcException("xxljob: addressType == 1, the addressList can't be empty");
+                throw new XxljobRpcException("xxljob: addressType == 1, the addressList can't be blank");
             }
         }
 

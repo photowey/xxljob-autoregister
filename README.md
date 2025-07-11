@@ -145,7 +145,7 @@ xxljob:
         username: "${ADMIN_USERNAME:admin}"
         password: "${ADMIN_PASSWORD:123456}"
 
-	  # @see com.xxl.job.core.executor.impl.XxlJobSpringExecutor
+      # @see com.xxl.job.core.executor.impl.XxlJobSpringExecutor
       executor:
         timeout: 30
         appname: "${spring.application.name}"

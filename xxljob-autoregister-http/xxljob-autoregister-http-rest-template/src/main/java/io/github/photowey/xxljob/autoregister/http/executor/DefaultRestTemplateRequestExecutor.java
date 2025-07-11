@@ -125,18 +125,18 @@ public class DefaultRestTemplateRequestExecutor
         HttpEntity<MultiValueMap<String, Object>> request = new HttpEntity<>(body, headers);
         ResponseEntity<String> response = this.restTemplate.postForEntity(url, request, String.class);
         String responseBody = response.getBody();
-        if (log.isDebugEnabled()) {
-            log.debug("xxljob: request admin API:[{}] response is:[{}]", url, responseBody);
-        }
-
         if (HttpStatus.OK != response.getStatusCode()) {
-            throw new XxljobRpcException("xxljob: remote request failed, message:[%s]", responseBody);
+            throw new XxljobRpcException(
+                "xxljob: request admin API:[%s] failed, response body:[%s]", url, responseBody);
         }
 
         Matcher matcher = BAD_REQUEST_RESPONSE_PATTERN.matcher(Objects.requireNonNull(responseBody));
         if (matcher.matches()) {
             String message = matcher.group(1);
-            throw new XxljobRpcException("xxljob: remote request failed, message:[%s]", message);
+            if (log.isDebugEnabled()) {
+                log.debug("xxljob: request admin API:[{}] response body is:[{}]", url, responseBody);
+            }
+            throw new XxljobRpcException("xxljob: request admin API:[%s] failed, message is:[%s]", url, message);
         }
 
         HttpHeaders responseHeaders = response.getHeaders();

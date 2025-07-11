@@ -34,6 +34,7 @@ import io.github.photowey.xxljob.autoregister.core.getter.BeanFactoryGetter;
  * @version 3.1.1.1.0.0
  * @since 2025/07/10
  */
+@SuppressWarnings("all")
 public interface ObjectMapperJsonConverter extends JsonConverter, BeanFactoryGetter {
 
     default ObjectMapper objectMapper() {

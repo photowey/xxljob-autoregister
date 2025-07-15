@@ -8,17 +8,23 @@
         <groupId>io.github.photowey</groupId>
         <artifactId>xxljob-autoregister</artifactId>
         <version>${reversion}</version>
+        <relativePath>../../pom.xml</relativePath>
     </parent>
-
-    <!-- Unsued now. -->
-
-    <artifactId>xxljob-autoregister-parent</artifactId>
-    <name>xxljob-autoregister-parent</name>
-    <description>parent project for xxljob-autoregister</description>
+    <artifactId>xxljob-autoregister-root</artifactId>
+    <name>xxljob-autoregister-root</name>
+    <description>Root project for xxl-job client</description>
     <packaging>pom</packaging>
 
+    <modules>
+        <module>../xxljob-autoregister-bom</module>
+        <module>../xxljob-autoregister-dependencies</module>
+        <module>../xxljob-autoregister-parent</module>
+    </modules>
+
+    <!-- @formatter:off -->
     <properties>
     </properties>
+    <!-- @formatter:on -->
 
     <dependencies>
     </dependencies>
@@ -30,7 +36,12 @@
                 <artifactId>xxljob-autoregister-bom</artifactId>
                 <version>${project.version}</version>
                 <type>pom</type>
-                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>io.github.photowey</groupId>
+                <artifactId>xxljob-autoregister-dependencies</artifactId>
+                <version>${project.version}</version>
+                <type>pom</type>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -39,5 +50,4 @@
         <plugins>
         </plugins>
     </build>
-
 </project>

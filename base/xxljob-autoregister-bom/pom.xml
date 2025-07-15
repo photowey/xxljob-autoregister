@@ -6,8 +6,9 @@
 
     <parent>
         <groupId>io.github.photowey</groupId>
-        <artifactId>xxljob-autoregister</artifactId>
+        <artifactId>xxljob-autoregister-root</artifactId>
         <version>${reversion}</version>
+        <relativePath>../xxljob-autoregister-root/pom.xml</relativePath>
     </parent>
 
     <artifactId>xxljob-autoregister-bom</artifactId>
@@ -102,18 +103,6 @@
                 <groupId>com.xuxueli</groupId>
                 <artifactId>xxl-job-core</artifactId>
                 <version>${xxljob.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.github.ben-manes.caffeine</groupId>
-                <artifactId>caffeine</artifactId>
-                <version>${caffeine.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.redisson</groupId>
-                <artifactId>redisson-spring-boot-starter</artifactId>
-                <version>${redisson.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

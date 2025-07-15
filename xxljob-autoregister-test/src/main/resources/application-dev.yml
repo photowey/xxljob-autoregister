@@ -14,7 +14,7 @@ xxljob:
         appname: "${spring.application.name}"
         address: ""
         ip: "127.0.0.1"
-        port: 9999
+        port: ${RPC_PORT:9999}
         log-path: "/tmp/logs/xxljob/jobhandler"
         log-retention-days: 7
 

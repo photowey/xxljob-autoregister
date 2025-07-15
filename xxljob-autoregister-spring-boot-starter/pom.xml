@@ -6,8 +6,9 @@
 
     <parent>
         <groupId>io.github.photowey</groupId>
-        <artifactId>xxljob-autoregister</artifactId>
+        <artifactId>xxljob-autoregister-parent</artifactId>
         <version>${reversion}</version>
+        <relativePath>../base/xxljob-autoregister-parent/pom.xml</relativePath>
     </parent>
 
     <artifactId>xxljob-autoregister-spring-boot-starter</artifactId>

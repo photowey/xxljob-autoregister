@@ -18,14 +18,16 @@ package io.github.photowey.xxljob.autoregister.storage.caffeine.config;
 
 import java.util.concurrent.TimeUnit;
 
-import com.github.benmanes.caffeine.cache.Cache;
-import com.github.benmanes.caffeine.cache.Caffeine;
-import io.github.photowey.xxljob.autoregister.core.property.XxljobProperties;
-import io.github.photowey.xxljob.autoregister.storage.api.AuthenticationCookieStorage;
-import io.github.photowey.xxljob.autoregister.storage.caffeine.CaffeineLocalAuthenticationCookieStorage;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
+
+import com.github.benmanes.caffeine.cache.Cache;
+import com.github.benmanes.caffeine.cache.Caffeine;
+
+import io.github.photowey.xxljob.autoregister.core.property.XxljobProperties;
+import io.github.photowey.xxljob.autoregister.storage.api.AuthenticationCookieStorage;
+import io.github.photowey.xxljob.autoregister.storage.caffeine.CaffeineLocalAuthenticationCookieStorage;
 
 /**
  * {@code LocalAuthenticationCookieStorageAutoConfiguration}.

@@ -16,11 +16,12 @@
  */
 package io.github.photowey.xxljob.autoregister.core.holder;
 
-import io.github.photowey.xxljob.autoregister.core.getter.BeanFactoryGetter;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
+
+import io.github.photowey.xxljob.autoregister.core.getter.BeanFactoryGetter;
 
 /**
  * {@code AbstractBeanFactoryHolder}.

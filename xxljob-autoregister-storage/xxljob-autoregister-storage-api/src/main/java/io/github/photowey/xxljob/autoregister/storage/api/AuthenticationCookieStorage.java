@@ -16,9 +16,10 @@
  */
 package io.github.photowey.xxljob.autoregister.storage.api;
 
+import org.springframework.core.Ordered;
+
 import io.github.photowey.xxljob.autoregister.core.getter.BeanFactoryGetter;
 import io.github.photowey.xxljob.autoregister.core.getter.XxljobPropertiesGetter;
-import org.springframework.core.Ordered;
 
 /**
  * {@code AuthenticationCookieStorage}.

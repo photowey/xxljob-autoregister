@@ -18,9 +18,10 @@ package io.github.photowey.xxljob.autoregister.lock.distributed.redisson;
 
 import java.util.concurrent.locks.Lock;
 
-import io.github.photowey.xxljob.autoregister.lock.distributed.RedisDistributedLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import io.github.photowey.xxljob.autoregister.lock.distributed.RedisDistributedLock;
 
 /**
  * {@code DefaultRedissonDistributedLock}.

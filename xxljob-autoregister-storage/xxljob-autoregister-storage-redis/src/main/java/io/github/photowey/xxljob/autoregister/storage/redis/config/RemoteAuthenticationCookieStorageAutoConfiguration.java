@@ -16,13 +16,14 @@
  */
 package io.github.photowey.xxljob.autoregister.storage.redis.config;
 
-import io.github.photowey.xxljob.autoregister.storage.api.AuthenticationCookieStorage;
-import io.github.photowey.xxljob.autoregister.storage.redis.DefaultRedisAuthenticationCookieStorage;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.StringRedisTemplate;
+
+import io.github.photowey.xxljob.autoregister.storage.api.AuthenticationCookieStorage;
+import io.github.photowey.xxljob.autoregister.storage.redis.DefaultRedisAuthenticationCookieStorage;
 
 /**
  * {@code RemoteAuthenticationCookieStorageAutoConfiguration}.

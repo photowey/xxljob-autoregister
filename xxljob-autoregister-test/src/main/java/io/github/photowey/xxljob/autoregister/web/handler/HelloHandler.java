@@ -16,11 +16,13 @@
  */
 package io.github.photowey.xxljob.autoregister.web.handler;
 
+import org.springframework.stereotype.Component;
+
 import com.xxl.job.core.handler.annotation.XxlJob;
+
 import io.github.photowey.xxljob.autoregister.core.enums.RegisterDictionary;
 import io.github.photowey.xxljob.autoregister.register.annotation.AutoJob;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 
 /**
  * {@code HelloHandler}.

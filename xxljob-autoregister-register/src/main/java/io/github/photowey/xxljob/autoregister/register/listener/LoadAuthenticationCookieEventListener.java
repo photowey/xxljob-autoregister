@@ -16,12 +16,13 @@
  */
 package io.github.photowey.xxljob.autoregister.register.listener;
 
-import io.github.photowey.xxljob.autoregister.core.event.LoadAuthenticationCookieEvent;
-import io.github.photowey.xxljob.autoregister.core.holder.AbstractApplicationContextHolder;
-import io.github.photowey.xxljob.autoregister.register.engine.RegisterEngineGetter;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
+
+import io.github.photowey.xxljob.autoregister.core.event.LoadAuthenticationCookieEvent;
+import io.github.photowey.xxljob.autoregister.core.holder.AbstractApplicationContextHolder;
+import io.github.photowey.xxljob.autoregister.register.engine.RegisterEngineGetter;
 
 /**
  * {@code LoadAuthenticationCookieEventListener}.

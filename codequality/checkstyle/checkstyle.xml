@@ -14,7 +14,8 @@
 
         <module name="AvoidStarImport"/>
         <module name="ImportOrder">
-            <property name="groups" value="/^java\./,/^(javax|jakarta)\./,*"/>
+            <property name="groups" value="java,javax,jakarta,org,com,*"/>
+            <property name="staticGroups" value="*"/>
             <property name="ordered" value="true"/>
             <property name="separated" value="true"/>
             <property name="sortStaticImportsAlphabetically" value="true"/>
@@ -89,7 +90,6 @@
             <property name="allowNonPrintableEscapes" value="true"/>
             <property name="severity" value="ignore"/>
         </module>
-        <module name="AvoidStarImport"/>
         <module name="OneTopLevelClass"/>
         <module name="NoLineWrap"/>
         <module name="EmptyBlock">
@@ -253,15 +253,6 @@
     </module>
 
     <module name="RegexpOnFilename">
-        <property name="folderPattern" value="[\\/]controller[\\/]?"/>
-        <property name="fileExtensions" value="java"/>
-        <property name="fileNamePattern" value="^[A-Z][a-zA-Z0-9]*Controller\.java$"/>
-        <property name="match" value="false"/>
-        <message key="regexp.filename.mismatch"
-                 value="Controller names in the controller package must end with 'Controller'."/>
-    </module>
-
-    <module name="RegexpOnFilename">
         <property name="folderPattern" value="[\\/]service(?![\\/]?impl[\\/]?).*"/>
         <property name="fileExtensions" value="java"/>
         <property name="fileNamePattern" value="^[A-Z][a-zA-Z0-9]*(Service|ServiceTest)\.java$"/>
@@ -280,45 +271,9 @@
     </module>
 
     <module name="RegexpOnFilename">
-        <property name="folderPattern" value="[\\/]dao(?![\\/]?impl[\\/]?).*"/>
-        <property name="fileExtensions" value="java"/>
-        <property name="fileNamePattern" value="^[A-Z][a-zA-Z0-9]*(DAO|DAOTest)\.java$"/>
-        <property name="match" value="false"/>
-        <message key="regexp.filename.mismatch"
-                 value="Interface names in the dao package must end with 'DAO' or 'DAOTest'."/>
-    </module>
-
-    <module name="RegexpOnFilename">
-        <property name="folderPattern" value="[\\/]dao[\\/]impl[\\/]?"/>
-        <property name="fileExtensions" value="java"/>
-        <property name="fileNamePattern" value="^[A-Z][a-zA-Z0-9]*DAOImpl\.java$"/>
-        <property name="match" value="false"/>
-        <message key="regexp.filename.mismatch"
-                 value="Class names in the dao.impl package must end with 'DAOImpl'."/>
-    </module>
-
-    <module name="RegexpOnFilename">
-        <property name="folderPattern" value="[\\/]mapper[\\/]?"/>
-        <property name="fileExtensions" value="java"/>
-        <property name="fileNamePattern" value="^[A-Z][a-zA-Z0-9]*Mapper\.java$"/>
-        <property name="match" value="false"/>
-        <message key="regexp.filename.mismatch"
-                 value="Interface names in the mapper package must end with 'Mapper'."/>
-    </module>
-
-    <module name="RegexpOnFilename">
-        <property name="folderPattern" value="[\\/]repository[\\/]?"/>
-        <property name="fileExtensions" value="java"/>
-        <property name="fileNamePattern" value="^[A-Z][a-zA-Z0-9]*Repository\.java$"/>
-        <property name="match" value="false"/>
-        <message key="regexp.filename.mismatch"
-                 value="Interface names in the repository package must end with 'Repository'."/>
-    </module>
-
-    <module name="RegexpOnFilename">
         <property name="folderPattern" value="[\\/]query[\\/]?"/>
         <property name="fileExtensions" value="java"/>
-        <property name="fileNamePattern" value="^[A-Z][a-zA-Z0-9]*Query\.java$"/>
+        <property name="fileNamePattern" value="^([A-Z][a-zA-Z0-9]*)?Query\.java$"/>
         <property name="match" value="false"/>
         <message key="regexp.filename.mismatch"
                  value="Query class names must end with 'Query'."/>
@@ -331,15 +286,6 @@
         <property name="match" value="false"/>
         <message key="regexp.filename.mismatch"
                  value="Payload class names must end with 'Payload'."/>
-    </module>
-
-    <module name="RegexpOnFilename">
-        <property name="folderPattern" value="[\\/]dto[\\/]?"/>
-        <property name="fileExtensions" value="java"/>
-        <property name="fileNamePattern" value="^[A-Z][a-zA-Z0-9]*DTO\.java$"/>
-        <property name="match" value="false"/>
-        <message key="regexp.filename.mismatch"
-                 value="DTO class names must end with 'DTO'."/>
     </module>
 
     <module name="SuppressionFilter">

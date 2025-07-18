@@ -22,8 +22,9 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import io.github.photowey.xxljob.autoregister.storage.caffeine.config.LocalAuthenticationCookieStorageAutoConfiguration;
 import org.springframework.context.annotation.Import;
+
+import io.github.photowey.xxljob.autoregister.storage.caffeine.config.LocalAuthenticationCookieStorageAutoConfiguration;
 
 // @formatter:off
 

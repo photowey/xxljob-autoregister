@@ -16,11 +16,12 @@
  */
 package io.github.photowey.xxljob.autoregister.lock.distributed.config;
 
-import io.github.photowey.xxljob.autoregister.lock.distributed.DefaultLocalDistributedLock;
-import io.github.photowey.xxljob.autoregister.lock.distributed.DistributedLock;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
+
+import io.github.photowey.xxljob.autoregister.lock.distributed.DefaultLocalDistributedLock;
+import io.github.photowey.xxljob.autoregister.lock.distributed.DistributedLock;
 
 /**
  * {@code LocalDistributedLockConfiguration}.

@@ -19,6 +19,13 @@ package io.github.photowey.xxljob.autoregister.register.service.impl;
 import java.net.HttpCookie;
 import java.util.Optional;
 
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.util.StringUtils;
+
 import io.github.photowey.xxljob.autoregister.core.constant.XxljobConstants;
 import io.github.photowey.xxljob.autoregister.core.domain.http.HttpResponse;
 import io.github.photowey.xxljob.autoregister.core.exception.XxljobRpcException;
@@ -26,12 +33,6 @@ import io.github.photowey.xxljob.autoregister.core.holder.AbstractBeanFactoryHol
 import io.github.photowey.xxljob.autoregister.core.property.XxljobProperties;
 import io.github.photowey.xxljob.autoregister.register.service.LoginService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.stereotype.Service;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.util.StringUtils;
 
 /**
  * {@code XxljobLoginServiceImpl}.

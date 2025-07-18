@@ -346,7 +346,7 @@ public class JobServiceImpl extends AbstractEnvironmentHolder implements JobServ
         try {
             this.applicationContext().publishEvent(new JobRegisteredEvent(payload));
         } catch (Exception e) {
-            log.error("xxljob-auto: async publish of registered event failed, info:[{},{}]",
+            log.error("xxljob-auto: async publish of registered event failed, info:[group:{},handler:{}]",
                 payload.getJobGroup(),
                 payload.getExecutorHandler(),
                 e

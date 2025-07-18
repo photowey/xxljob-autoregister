@@ -147,4 +147,36 @@ public class HelloHandler {
     public void spelScheduleTask() {
         log.info("Hello spelScheduleTask");
     }
+
+    @AutoJob(
+        job = @AutoJob.Job(
+            value = "io.github.photowey.xxljob.autoregister.web.handler.HelloHandler#eventScheduleTask",
+            enabled = true
+        ),
+        base = @AutoJob.Base(
+            description = "eventScheduleTask",
+            author = "photowey",
+            email = "photowey@gmail.com"
+        ),
+        schedule = @AutoJob.Schedule(
+            scheduleType = RegisterDictionary.ScheduleType.CRON,
+            scheduleConf = "0/10 * * * * ? *"
+        ),
+        task = @AutoJob.Task(
+            handler = "io.github.photowey.xxljob.autoregister.web.handler.HelloHandler#eventScheduleTask",
+            arguments = "xxljob://event"
+        ),
+        advanced = @AutoJob.Advanced(
+            routeStrategy = RegisterDictionary.RouteStrategy.FIRST,
+            misfireStrategy = RegisterDictionary.MisfireStrategy.DO_NOTHING,
+            blockStrategy = RegisterDictionary.BlockStrategy.SERIAL_EXECUTION,
+            executorTimeout = 0,
+            executorFailRetryCount = 0
+        ),
+        triggerStatus = 1
+    )
+    public void eventScheduleTask() {
+        log.info("Hello eventScheduleTask");
+    }
+
 }

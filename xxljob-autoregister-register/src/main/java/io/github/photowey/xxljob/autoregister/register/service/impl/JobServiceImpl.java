@@ -21,6 +21,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -34,6 +35,7 @@ import io.github.photowey.xxljob.autoregister.core.domain.http.HttpResponse;
 import io.github.photowey.xxljob.autoregister.core.domain.http.XxljobPageResponse;
 import io.github.photowey.xxljob.autoregister.core.domain.http.XxljobResponse;
 import io.github.photowey.xxljob.autoregister.core.domain.payload.JobAddPayload;
+import io.github.photowey.xxljob.autoregister.core.event.JobRegisteredEvent;
 import io.github.photowey.xxljob.autoregister.core.exception.XxljobRpcException;
 import io.github.photowey.xxljob.autoregister.core.holder.AbstractEnvironmentHolder;
 import io.github.photowey.xxljob.autoregister.register.annotation.AutoJob;
@@ -184,6 +186,10 @@ public class JobServiceImpl extends AbstractEnvironmentHolder implements JobServ
 
             MethodJobHandler methodJobHandler = this.populateMethodJobHandler(bean, executeMethod, autoJob);
             XxlJobExecutor.registJobHandler(payload.executorHandler(), methodJobHandler);
+
+            if (!registerd) {
+                this.publishRegisteredEventAsync(payload);
+            }
         }
     }
 
@@ -249,6 +255,8 @@ public class JobServiceImpl extends AbstractEnvironmentHolder implements JobServ
 
                 JobAddPayload payload = this.toJobAddPayload(group, xxlJob, autoJob);
                 this.add(payload);
+
+                this.publishRegisteredEventAsync(payload);
             }
         }
     }
@@ -308,23 +316,42 @@ public class JobServiceImpl extends AbstractEnvironmentHolder implements JobServ
     private MultiValueMap<String, Object> populateAddFormDataBody(JobAddPayload payload) {
         Map<String, Object> objectMap = this.registerEngine().json().toMap(payload);
 
-        MultiValueMap<String, Object> multiValueMap = new LinkedMultiValueMap<>();
+        MultiValueMap<String, Object> ctx = new LinkedMultiValueMap<>();
         for (Map.Entry<String, Object> entry : objectMap.entrySet()) {
-            multiValueMap.add(entry.getKey(), entry.getValue());
+            ctx.add(entry.getKey(), entry.getValue());
         }
 
         objectMap.clear();
-        objectMap = null;
+        objectMap = null; // Help GC
 
-        return multiValueMap;
+        return ctx;
     }
 
     private MultiValueMap<String, Object> populatePageFormDataBody(Integer groupId, String executorHandler) {
-        MultiValueMap<String, Object> multiValueMap = new LinkedMultiValueMap<>(4);
-        multiValueMap.add(XxljobConstants.Field.JOB_GROUP, groupId);
-        multiValueMap.add(XxljobConstants.Field.EXECUTOR_HANDLER, executorHandler);
-        multiValueMap.add(XxljobConstants.Field.TRIGGER_STATUS, -1);
+        MultiValueMap<String, Object> ctx = new LinkedMultiValueMap<>(4);
+        ctx.add(XxljobConstants.Field.JOB_GROUP, groupId);
+        ctx.add(XxljobConstants.Field.EXECUTOR_HANDLER, executorHandler);
+        ctx.add(XxljobConstants.Field.TRIGGER_STATUS, -1);
 
-        return multiValueMap;
+        return ctx;
+    }
+
+    // ----------------------------------------------------------------
+
+    private void publishRegisteredEventAsync(JobAddPayload payload) {
+        CompletableFuture.runAsync(() -> this.publishRegisteredEventSafe(payload), this.notifyAsyncTaskExecutor());
+    }
+
+    private void publishRegisteredEventSafe(JobAddPayload payload) {
+        try {
+            this.applicationContext().publishEvent(new JobRegisteredEvent(payload));
+        } catch (Exception e) {
+            log.error("xxljob-auto: async publish of registered event failed, info:[group:{},handler:{}]",
+                payload.getJobGroup(),
+                payload.getExecutorHandler(),
+                e
+            );
+            throw new RuntimeException(e);
+        }
     }
 }

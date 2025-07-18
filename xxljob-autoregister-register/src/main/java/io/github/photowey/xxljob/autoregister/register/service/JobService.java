@@ -19,12 +19,14 @@ package io.github.photowey.xxljob.autoregister.register.service;
 import java.util.List;
 import java.util.function.Consumer;
 
+import io.github.photowey.xxljob.autoregister.core.constant.XxljobConstants;
 import io.github.photowey.xxljob.autoregister.core.domain.dto.JobDTO;
 import io.github.photowey.xxljob.autoregister.core.domain.payload.JobAddPayload;
 import io.github.photowey.xxljob.autoregister.core.getter.EnvironmentGetter;
 import io.github.photowey.xxljob.autoregister.core.getter.XxljobPropertiesGetter;
 import io.github.photowey.xxljob.autoregister.register.context.RegisterContext;
 import io.github.photowey.xxljob.autoregister.register.engine.RegisterEngineGetter;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.util.MultiValueMap;
 
 /**
@@ -57,5 +59,13 @@ public interface JobService extends RegisterEngineGetter, XxljobPropertiesGetter
     // ----------------------------------------------------------------
 
     void triggerAutoRegister(RegisterContext ctx);
+
+    // ----------------------------------------------------------------
+
+    default ThreadPoolTaskExecutor notifyAsyncTaskExecutor() {
+        return this.beanFactory()
+            .getBean(XxljobConstants.Notify.NOTIFY_EXECUTOR_BEAN_NAME, ThreadPoolTaskExecutor.class);
+    }
+
 
 }

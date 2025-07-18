@@ -16,15 +16,20 @@
  */
 package io.github.photowey.xxljob.autoregister.register.config;
 
+import java.util.concurrent.ThreadPoolExecutor;
+
+import io.github.photowey.xxljob.autoregister.core.constant.XxljobConstants;
 import io.github.photowey.xxljob.autoregister.register.converter.json.DefaultObjectMapperJsonConverter;
 import io.github.photowey.xxljob.autoregister.register.converter.json.JsonConverter;
 import io.github.photowey.xxljob.autoregister.register.engine.DefaultRegisterEngine;
 import io.github.photowey.xxljob.autoregister.register.engine.RegisterEngine;
 import io.github.photowey.xxljob.autoregister.register.processor.AutoRegisterBeanDefinitionRegistryPostProcessor;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 /**
  * {@code AutoRegisterConfiguration}.
@@ -58,5 +63,29 @@ public class AutoRegisterConfiguration {
     @Bean
     public JsonConverter jsonConverter() {
         return new DefaultObjectMapperJsonConverter();
+    }
+
+    @Bean(XxljobConstants.Notify.NOTIFY_EXECUTOR_BEAN_NAME)
+    @ConditionalOnMissingBean(name = XxljobConstants.Notify.NOTIFY_EXECUTOR_BEAN_NAME)
+    public ThreadPoolTaskExecutor notifyAsyncTaskExecutor() {
+        ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
+        taskExecutor.setCorePoolSize(2);
+        taskExecutor.setMaxPoolSize(4);
+        taskExecutor.setQueueCapacity(1 << 10);
+        taskExecutor.setKeepAliveSeconds(1 << 6);
+
+        // If necessary.
+        // taskExecutor.setTaskDecorator
+
+        taskExecutor.setThreadGroupName("async");
+        taskExecutor.setThreadNamePrefix("xxljob-autoregister-notify" + "-");
+        taskExecutor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
+
+        taskExecutor.setAllowCoreThreadTimeOut(false);
+        taskExecutor.setWaitForTasksToCompleteOnShutdown(true);
+
+        taskExecutor.initialize();
+
+        return taskExecutor;
     }
 }

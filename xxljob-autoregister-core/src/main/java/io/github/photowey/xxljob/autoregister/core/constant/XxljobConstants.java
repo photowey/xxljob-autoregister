@@ -74,4 +74,8 @@ public interface XxljobConstants {
         String GROUP_ADDRESS_TYPE = "addressType";
         String GROUP_ADDRESS_LIST = "addressList";
     }
+
+    interface Notify {
+        String NOTIFY_EXECUTOR_BEAN_NAME = "notifyAsyncTaskExecutor";
+    }
 }

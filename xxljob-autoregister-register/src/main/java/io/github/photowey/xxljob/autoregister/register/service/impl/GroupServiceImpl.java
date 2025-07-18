@@ -18,7 +18,16 @@ package io.github.photowey.xxljob.autoregister.register.service.impl;
 
 import java.util.List;
 
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.util.StringUtils;
+
 import com.fasterxml.jackson.core.type.TypeReference;
+
 import io.github.photowey.xxljob.autoregister.core.constant.XxljobConstants;
 import io.github.photowey.xxljob.autoregister.core.domain.dto.GroupDTO;
 import io.github.photowey.xxljob.autoregister.core.domain.http.HttpResponse;
@@ -30,13 +39,6 @@ import io.github.photowey.xxljob.autoregister.core.holder.AbstractBeanFactoryHol
 import io.github.photowey.xxljob.autoregister.register.context.RegisterContext;
 import io.github.photowey.xxljob.autoregister.register.service.GroupService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.util.StringUtils;
 
 /**
  * {@code GroupServiceImpl}.

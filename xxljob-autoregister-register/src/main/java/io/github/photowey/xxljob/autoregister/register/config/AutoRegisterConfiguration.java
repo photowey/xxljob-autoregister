@@ -18,18 +18,19 @@ package io.github.photowey.xxljob.autoregister.register.config;
 
 import java.util.concurrent.ThreadPoolExecutor;
 
-import io.github.photowey.xxljob.autoregister.core.constant.XxljobConstants;
-import io.github.photowey.xxljob.autoregister.register.converter.json.DefaultObjectMapperJsonConverter;
-import io.github.photowey.xxljob.autoregister.register.converter.json.JsonConverter;
-import io.github.photowey.xxljob.autoregister.register.engine.DefaultRegisterEngine;
-import io.github.photowey.xxljob.autoregister.register.engine.RegisterEngine;
-import io.github.photowey.xxljob.autoregister.register.processor.AutoRegisterBeanDefinitionRegistryPostProcessor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+
+import io.github.photowey.xxljob.autoregister.core.constant.XxljobConstants;
+import io.github.photowey.xxljob.autoregister.register.converter.json.DefaultObjectMapperJsonConverter;
+import io.github.photowey.xxljob.autoregister.register.converter.json.JsonConverter;
+import io.github.photowey.xxljob.autoregister.register.engine.DefaultRegisterEngine;
+import io.github.photowey.xxljob.autoregister.register.engine.RegisterEngine;
+import io.github.photowey.xxljob.autoregister.register.processor.AutoRegisterBeanDefinitionRegistryPostProcessor;
 
 /**
  * {@code AutoRegisterConfiguration}.

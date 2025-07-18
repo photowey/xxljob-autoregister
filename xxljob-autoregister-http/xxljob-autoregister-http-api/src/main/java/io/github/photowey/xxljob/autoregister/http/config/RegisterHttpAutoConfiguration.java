@@ -16,11 +16,12 @@
  */
 package io.github.photowey.xxljob.autoregister.http.config;
 
-import io.github.photowey.xxljob.autoregister.http.parser.DefaultHttpCookieParser;
-import io.github.photowey.xxljob.autoregister.http.parser.HttpCookieParser;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
+
+import io.github.photowey.xxljob.autoregister.http.parser.DefaultHttpCookieParser;
+import io.github.photowey.xxljob.autoregister.http.parser.HttpCookieParser;
 
 /**
  * {@code RegisterHttpAutoConfiguration}.

@@ -16,13 +16,14 @@
  */
 package io.github.photowey.xxljob.autoregister.http.executor.config;
 
-import io.github.photowey.xxljob.autoregister.http.executor.DefaultRestTemplateRequestExecutor;
-import io.github.photowey.xxljob.autoregister.http.executor.RequestExecutor;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.client.RestTemplate;
+
+import io.github.photowey.xxljob.autoregister.http.executor.DefaultRestTemplateRequestExecutor;
+import io.github.photowey.xxljob.autoregister.http.executor.RequestExecutor;
 
 /**
  * {@code RestTemplateRequestExecutorConfiguration}.

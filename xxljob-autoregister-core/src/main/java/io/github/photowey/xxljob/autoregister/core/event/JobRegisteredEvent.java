@@ -16,8 +16,9 @@
  */
 package io.github.photowey.xxljob.autoregister.core.event;
 
-import io.github.photowey.xxljob.autoregister.core.domain.payload.JobAddPayload;
 import org.springframework.context.ApplicationEvent;
+
+import io.github.photowey.xxljob.autoregister.core.domain.payload.JobAddPayload;
 
 /**
  * {@code JobRegisteredEvent}.

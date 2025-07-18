@@ -16,12 +16,14 @@
  */
 package io.github.photowey.xxljob.autoregister.storage.caffeine;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
+
 import com.github.benmanes.caffeine.cache.Cache;
+
 import io.github.photowey.xxljob.autoregister.core.event.LoadAuthenticationCookieEvent;
 import io.github.photowey.xxljob.autoregister.core.holder.AbstractApplicationContextHolder;
 import io.github.photowey.xxljob.autoregister.storage.api.LocalAuthenticationCookieStorage;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.StringUtils;
 
 /**
  * {@code CaffeineLocalAuthenticationCookieStorage}.

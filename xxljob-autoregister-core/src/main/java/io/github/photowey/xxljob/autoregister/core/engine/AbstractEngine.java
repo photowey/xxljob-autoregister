@@ -16,8 +16,6 @@
  */
 package io.github.photowey.xxljob.autoregister.core.engine;
 
-import lombok.Getter;
-import lombok.experimental.Accessors;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
@@ -28,6 +26,9 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.Environment;
+
+import lombok.Getter;
+import lombok.experimental.Accessors;
 
 /**
  * {@code AbstractEngine}.

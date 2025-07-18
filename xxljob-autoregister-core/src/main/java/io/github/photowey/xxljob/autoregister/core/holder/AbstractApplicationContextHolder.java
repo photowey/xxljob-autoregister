@@ -16,11 +16,12 @@
  */
 package io.github.photowey.xxljob.autoregister.core.holder;
 
-import io.github.photowey.xxljob.autoregister.core.getter.ApplicationContextGetter;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ConfigurableApplicationContext;
+
+import io.github.photowey.xxljob.autoregister.core.getter.ApplicationContextGetter;
 
 /**
  * {@code AbstractApplicationContextHolder}.

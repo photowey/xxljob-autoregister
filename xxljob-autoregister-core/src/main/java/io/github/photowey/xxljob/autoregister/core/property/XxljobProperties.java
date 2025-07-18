@@ -24,14 +24,15 @@ import java.util.concurrent.TimeUnit;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.util.StringUtils;
+import org.springframework.validation.annotation.Validated;
+
 import io.github.photowey.xxljob.autoregister.core.constant.XxljobConstants;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.InitializingBean;
-import org.springframework.util.StringUtils;
-import org.springframework.validation.annotation.Validated;
 
 /**
  * {@code XxljobProperties}.

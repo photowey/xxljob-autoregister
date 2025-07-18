@@ -27,7 +27,7 @@ Add this to your `pom.xml`
 > $ make deploy
 > ```
 >
-> 
+>
 
 ```xml
 <dependency>
@@ -207,8 +207,6 @@ local:
 #### 3.1.2.`...`
 
 > Extend this yourself.
-
-
 
 ### 3.2.`DistributedLock`
 

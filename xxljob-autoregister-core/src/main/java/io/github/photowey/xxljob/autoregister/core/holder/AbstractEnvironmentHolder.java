@@ -16,10 +16,11 @@
  */
 package io.github.photowey.xxljob.autoregister.core.holder;
 
-import io.github.photowey.xxljob.autoregister.core.getter.EnvironmentGetter;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.Environment;
+
+import io.github.photowey.xxljob.autoregister.core.getter.EnvironmentGetter;
 
 /**
  * {@code AbstractEnvironmentHolder}.

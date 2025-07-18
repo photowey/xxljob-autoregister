@@ -16,11 +16,13 @@
  */
 package io.github.photowey.xxljob.autoregister.register.config;
 
-import com.xxl.job.core.executor.impl.XxlJobSpringExecutor;
-import io.github.photowey.xxljob.autoregister.core.property.XxljobProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import com.xxl.job.core.executor.impl.XxlJobSpringExecutor;
+
+import io.github.photowey.xxljob.autoregister.core.property.XxljobProperties;
 
 /**
  * {@code XxlJobSpringExecutorConfiguration}.

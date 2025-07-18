@@ -38,7 +38,7 @@ import lombok.experimental.SuperBuilder;
 public class JobAddPayload implements Serializable {
 
     @Serial
-    protected static final long serialVersionUID = 7966217081559884138L;
+    private static final long serialVersionUID = 7966217081559884138L;
 
     // @see com.xxl.job.admin.core.model.XxlJobInfo
     // @see com.xxl.job.admin.controller.JobInfoController#add

@@ -36,12 +36,12 @@ jobs:
 
       - name: Configure Maven
         run: |
-          mkdir -p /home/runner/m2/repository
+          mkdir -p /home/runner/.m2
           echo "<settings xmlns=\"http://maven.apache.org/SETTINGS/1.0.0\"
             xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"
             xsi:schemaLocation=\"http://maven.apache.org/SETTINGS/1.0.0 https://maven.apache.org/xsd/settings-1.0.0.xsd\">
             <localRepository>/home/runner/m2/repository</localRepository>
-          </settings>" > /home/runner/m2/settings.xml
+          </settings>" > /home/runner/.m2
 
       - name: Deploy with Maven
         run: mvn clean -DskipTests source:jar deploy
